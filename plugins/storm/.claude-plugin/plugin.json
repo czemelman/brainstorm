@@ -1,0 +1,11 @@
+{
+  "name": "storm",
+  "description": "Multi-agent brainstorming system — research, ideation, evaluation, red team, and hardened execution planning",
+  "version": "1.0.0",
+  "author": {
+    "name": "Constantin Zemelman"
+  },
+  "repository": "https://github.com/czemelman/brainstorm",
+  "license": "MIT",
+  "keywords": ["brainstorm", "ideation", "planning", "multi-agent", "evaluation"]
+}

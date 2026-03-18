@@ -1,0 +1,20 @@
+{
+  "name": "czemelman-tools",
+  "owner": {
+    "name": "Constantin Zemelman",
+    "email": "czemelman@github.com"
+  },
+  "metadata": {
+    "description": "AI-powered brainstorming toolkit for Claude Code"
+  },
+  "plugins": [
+    {
+      "name": "storm",
+      "source": "./plugins/storm",
+      "description": "Multi-agent brainstorming system with research, ideation, evaluation, red team, and execution planning",
+      "version": "1.0.0",
+      "keywords": ["brainstorm", "ideation", "planning", "multi-agent"],
+      "category": "productivity"
+    }
+  ]
+}
