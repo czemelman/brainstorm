@@ -123,27 +123,27 @@
 <div class="grid-2">
 <div class="section"><h2>Agents</h2>
   <div class="agent-card" style="border-left: 4px solid #6366f1">
-    <div class="agent-name">null</div>
+    <div class="agent-name">Delusional Visionary</div>
     <div class="agent-meta">sonnet &middot; 16 ideas ( R1:8 R2:5 R3:3)</div>
   </div>
   <div class="agent-card" style="border-left: 4px solid #ec4899">
-    <div class="agent-name">null</div>
+    <div class="agent-name">Customer Voice</div>
     <div class="agent-meta">sonnet &middot; 16 ideas ( R1:8 R2:5 R3:3)</div>
   </div>
   <div class="agent-card" style="border-left: 4px solid #f59e0b">
-    <div class="agent-name">null</div>
+    <div class="agent-name">Formal Methods Purist</div>
     <div class="agent-meta">sonnet &middot; 16 ideas ( R1:8 R2:5 R3:3)</div>
   </div>
   <div class="agent-card" style="border-left: 4px solid #10b981">
-    <div class="agent-name">null</div>
+    <div class="agent-name">Battle-Scarred SRE</div>
     <div class="agent-meta">sonnet &middot; 16 ideas ( R1:8 R2:5 R3:3)</div>
   </div>
   <div class="agent-card" style="border-left: 4px solid #3b82f6">
-    <div class="agent-name">null</div>
+    <div class="agent-name">Testing Economist</div>
     <div class="agent-meta">sonnet &middot; 16 ideas ( R1:8 R2:5 R3:3)</div>
   </div>
   <div class="agent-card" style="border-left: 4px solid #8b5cf6">
-    <div class="agent-name">null</div>
+    <div class="agent-name">Bash Whisperer</div>
     <div class="agent-meta">sonnet &middot; 16 ideas ( R1:8 R2:5 R3:3)</div>
   </div>
 </div>
@@ -160,7 +160,7 @@
     <summary><span style="font-size:1rem;">Round 1 — Independent Ideation</span> <span style="font-size:0.8rem; color:#64748b; font-weight:400;">&mdash; 0 ideas from 6 agents, 3 deduped &rarr; 45 final</span></summary>
     <div class="detail-body">
       <details>
-        <summary style="color:#6366f1">null (8 ideas)</summary>
+        <summary style="color:#6366f1">Delusional Visionary (8 ideas)</summary>
         <div class="detail-body">
 <div class="idea-line"><span class="idea-id">1.</span> Treat non-determinism as the test oracle itself: run the pipeline 1000 times with live LLM calls and assert that the *distribution* of state-file transitions has zero structural variance — if orchestration is correct, only content varies, never the graph of phase edges traversed.</div>
 <div class="idea-line"><span class="idea-id">2.</span> Replace the test suite entirely with a formal specification language that compiles bash scripts directly from a state-machine DSL, making the implementation and its correctness proofs a single artifact with no separate test code to maintain.</div>
@@ -172,7 +172,7 @@
 <div class="idea-line"><span class="idea-id">8.</span> Generate the entire test suite automatically by having an LLM analyze the bash scripts once, infer all implicit contracts and invariants, write them as executable BATS assertions, and then continuously re-generate the suite whenever the scripts change — so test maintenance cost asymptotes to zero.</div>
 </div></details>
       <details>
-        <summary style="color:#ec4899">null (8 ideas)</summary>
+        <summary style="color:#ec4899">Customer Voice (8 ideas)</summary>
         <div class="detail-body">
 <div class="idea-line"><span class="idea-id">1.</span> Start with BATS tests for the bash orchestration layer first and only expand to more exotic tooling after those tests have actually caught a real regression, not before.</div>
 <div class="idea-line"><span class="idea-id">2.</span> Every test fixture (state file, mock LLM response) should live in a plain directory next to the test that uses it so a new contributor can find, read, and modify it without reading documentation.</div>
@@ -184,7 +184,7 @@
 <div class="idea-line"><span class="idea-id">8.</span> Chaos and fault-injection tests belong in a clearly labeled `tests/resilience/` directory that is explicitly excluded from the commit gate, so they can be run deliberately without ever surprising a developer who just wants a green check.</div>
 </div></details>
       <details>
-        <summary style="color:#f59e0b">null (8 ideas)</summary>
+        <summary style="color:#f59e0b">Formal Methods Purist (8 ideas)</summary>
         <div class="detail-body">
 <div class="idea-line"><span class="idea-id">1.</span> Define the pipeline state machine as a formal tuple (S, E, delta, s0, F) where S is the complete set of states, E the event alphabet, and delta the total transition function — any unspecified (state, event) pair is a test-generating obligation, not an implementation gap to ignore.</div>
 <div class="idea-line"><span class="idea-id">2.</span> The coverage-vs-reliability contradiction dissolves entirely once you acknowledge that coverage of orchestration correctness means coverage of invariants, not coverage of code paths — enumerate every invariant formally, and testing only those invariants is by definition complete coverage of what mat</div>
@@ -196,7 +196,7 @@
 <div class="idea-line"><span class="idea-id">8.</span> Adopt a monotonicity invariant as a first-class executable property: encode &quot;phase index never decreases except via an explicit retry event&quot; as a Hypothesis stateful rule that fires on every generated command sequence, giving automatic regression detection for any code change that accident</div>
 </div></details>
       <details>
-        <summary style="color:#10b981">null (8 ideas)</summary>
+        <summary style="color:#10b981">Battle-Scarred SRE (8 ideas)</summary>
         <div class="detail-body">
 <div class="idea-line"><span class="idea-id">1.</span> Fault injection must be a first-class citizen on every commit run, not a weekly luxury — a mock LLM that returns malformed JSON, a mid-stream connection drop, or a 429 at the right boundary catches more real bugs in 5 seconds than a full end-to-end happy-path run in 5 minutes.</div>
 <div class="idea-line"><span class="idea-id">2.</span> After every test that injects any failure — disk full, bad JSON, timeout, permission denied — the test harness must atomically verify the entire state file tree for corruption, because a pipeline that silently writes partial JSON to disk is worse than one that crashes loudly.</div>
@@ -208,7 +208,7 @@
 <div class="idea-line"><span class="idea-id">8.</span> Every test run must record and pin the model version, prompt version, plugin version, and config hash alongside the structured trace, because without that four-tuple you cannot distinguish a regression from an LLM behavior drift, and every incident investigation starts with that question.</div>
 </div></details>
       <details>
-        <summary style="color:#3b82f6">null (8 ideas)</summary>
+        <summary style="color:#3b82f6">Testing Economist (8 ideas)</summary>
         <div class="detail-body">
 <div class="idea-line"><span class="idea-id">1.</span> The minimum viable test suite is BATS unit tests for state file I/O plus JSON Schema validation for inter-phase contracts — these two layers alone catch roughly 80% of orchestration regressions at under 20% of the total infrastructure cost.</div>
 <div class="idea-line"><span class="idea-id">2.</span> Before building record/replay infrastructure, measure the actual frequency of multi-phase integration bugs over the past three months; if the answer is &quot;fewer than one per month,&quot; Layer 2 schema validation is sufficient and record/replay is expensive insurance against a rare event.</div>
@@ -220,7 +220,7 @@
 <div class="idea-line"><span class="idea-id">8.</span> Define a suite-level efficiency metric from day one — bugs caught per hour of test execution and bugs caught per hour of maintenance — so the team has an empirical signal for when the test suite's upkeep cost has crossed the break-even point against the bugs it prevents.</div>
 </div></details>
       <details>
-        <summary style="color:#8b5cf6">null (8 ideas)</summary>
+        <summary style="color:#8b5cf6">Bash Whisperer (8 ideas)</summary>
         <div class="detail-body">
 <div class="idea-line"><span class="idea-id">1.</span> Implement a single `call_llm()` function as the exclusive LLM entry point, controlled by a `PIPELINE_MODE` env var that swaps in fixture-file reads instead of live `curl` calls, making the entire non-deterministic boundary a one-function toggle with zero test-infrastructure overhead.</div>
 <div class="idea-line"><span class="idea-id">2.</span> Write a `bats-state-helpers.bash` shared library of jq-backed assertions (`assert_state_has_key`, `assert_phase_is`, `assert_valid_json`) loaded via BATS `load`, so every test file gets consistent, reusable state-file checks without duplicating jq invocations.</div>
@@ -234,309 +234,3 @@
       <details>
         <summary style="color:#fca5a5">Dedup Report (3 removed)</summary>
         <div class="detail-body">
-</div></details>
-      <details>
-        <summary>Diversity Assessment (Score: ?/10)</summary>
-        <div class="detail-body">
-</div></details>
-      <details>
-        <summary>Compiled Board (45 ideas)</summary>
-        <div class="detail-body">
-<div class="idea-line"><span class="idea-id">[1]</span> <span class="idea-agent">(bash_whisperer)</span> Implement a single `call_llm()` function as the exclusive LLM entry point, controlled by a `PIPELINE_MODE` env var that swaps in fixture-file reads instead of live `curl` calls, making the entire non-</div>
-<div class="idea-line"><span class="idea-id">[2]</span> <span class="idea-agent">(bash_whisperer)</span> Write a `bats-state-helpers.bash` shared library of jq-backed assertions (`assert_state_has_key`, `assert_phase_is`, `assert_valid_json`) loaded via BATS `load`, so every test file gets consistent, re</div>
-<div class="idea-line"><span class="idea-id">[3]</span> <span class="idea-agent">(bash_whisperer)</span> Use `setup() { TEST_DIR=$(mktemp -d); export STATE_DIR=&quot;$TEST_DIR&quot;; }` with a matching `teardown()` that `rm -rf`s it, giving every BATS test an isolated, clean filesystem surface so no test</div>
-<div class="idea-line"><span class="idea-id">[4]</span> <span class="idea-agent">(bash_whisperer)</span> Build a record/replay trace naming convention keyed on `${PHASE}_${AGENT_ID}_${CALL_SEQ}.json` so replay mode deterministically locates the right fixture for every LLM call site without ambiguity, mak</div>
-<div class="idea-line"><span class="idea-id">[5]</span> <span class="idea-agent">(bash_whisperer)</span> Write the highest-ROI test category first — error-path tests that feed malformed JSON, missing required files, and unset env vars into each phase script — because these catch the silent-corruption bug</div>
-<div class="idea-line"><span class="idea-id">[6]</span> <span class="idea-agent">(bash_whisperer)</span> Source individual phase scripts in unit tests and call their internal functions directly (rather than running the full pipeline binary), so each function's preconditions and postconditions can be asse</div>
-<div class="idea-line"><span class="idea-id">[7]</span> <span class="idea-agent">(bash_whisperer)</span> Add a `jq -e` guard pattern as a bash-native schema validator: a shared helper that iterates required-key assertions and types using `jq`'s exit-code semantics, avoiding the Node.js/Python JSON Schema</div>
-<div class="idea-line"><span class="idea-id">[8]</span> <span class="idea-agent">(bash_whisperer)</span> Instrument the `call_llm()` wrapper to append a structured log line (`phase, call_seq, fixture_file, timestamp, exit_code`) to a per-test-run trace file, turning test execution artifacts into both deb</div>
-<div class="idea-line"><span class="idea-id">[9]</span> <span class="idea-agent">(battle_scarred_sre)</span> Fault injection must be a first-class citizen on every commit run, not a weekly luxury — a mock LLM that returns malformed JSON, a mid-stream connection drop, or a 429 at the right boundary catches mo</div>
-<div class="idea-line"><span class="idea-id">[10]</span> <span class="idea-agent">(battle_scarred_sre)</span> After every test that injects any failure — disk full, bad JSON, timeout, permission denied — the test harness must atomically verify the entire state file tree for corruption, because a pipeline that</div>
-<div class="idea-line"><span class="idea-id">[11]</span> <span class="idea-agent">(battle_scarred_sre)</span> The pipeline's execution trace must be structured, append-only, and emitted unconditionally so that every CI failure doubles as a replay artifact for post-incident investigation — without a determinis</div>
-<div class="idea-line"><span class="idea-id">[12]</span> <span class="idea-agent">(battle_scarred_sre)</span> Race condition tests for concurrent agent writes to shared state files belong in the commit-gating suite, not the nightly suite, because state file corruption from concurrent access is the silent kill</div>
-<div class="idea-line"><span class="idea-id">[13]</span> <span class="idea-agent">(battle_scarred_sre)</span> Every environment variable the pipeline consumes must be individually withdrawn mid-execution in a dedicated fault injection test, not just checked at startup, because the failure mode that actually b</div>
-<div class="idea-line"><span class="idea-id">[14]</span> <span class="idea-agent">(battle_scarred_sre)</span> Treat the test infrastructure itself as a system under test: the mock LLM stub, the state file fixtures, and the BATS harness must each have their own failure scenarios verified, because a mock that s</div>
-<div class="idea-line"><span class="idea-id">[15]</span> <span class="idea-agent">(battle_scarred_sre)</span> Partial streaming response injection — where the mock LLM drops the connection at a random byte offset — must be a standard test fixture, because a pipeline that accepts a half-formed JSON response as</div>
-<div class="idea-line"><span class="idea-id">[16]</span> <span class="idea-agent">(battle_scarred_sre)</span> Every test run must record and pin the model version, prompt version, plugin version, and config hash alongside the structured trace, because without that four-tuple you cannot distinguish a regressio</div>
-<div class="idea-line"><span class="idea-id">[17]</span> <span class="idea-agent">(customer_voice)</span> Start with BATS tests for the bash orchestration layer first and only expand to more exotic tooling after those tests have actually caught a real regression, not before.</div>
-<div class="idea-line"><span class="idea-id">[18]</span> <span class="idea-agent">(customer_voice)</span> Every test fixture (state file, mock LLM response) should live in a plain directory next to the test that uses it so a new contributor can find, read, and modify it without reading documentation.</div>
-<div class="idea-line"><span class="idea-id">[19]</span> <span class="idea-agent">(customer_voice)</span> JSON Schema validation of state files is the single highest-ROI investment: define the schema once, run `ajv` or `jv` in one line per phase, and every malformed state transition becomes a CI failure a</div>
-<div class="idea-line"><span class="idea-id">[21]</span> <span class="idea-agent">(customer_voice)</span> Record-replay is only worth building if re-recording a fixture takes under five minutes and can be done by running a single documented command, otherwise the corpus will rot and become a liability wit</div>
-<div class="idea-line"><span class="idea-id">[23]</span> <span class="idea-agent">(customer_voice)</span> The CI gate must be a single `make test` command with zero required environment variables, zero credentials, and a pass/fail exit code, so that onboarding a new contributor to the test suite takes les</div>
-<div class="idea-line"><span class="idea-id">[24]</span> <span class="idea-agent">(customer_voice)</span> Chaos and fault-injection tests belong in a clearly labeled `tests/resilience/` directory that is explicitly excluded from the commit gate, so they can be run deliberately without ever surprising a de</div>
-<div class="idea-line"><span class="idea-id">[25]</span> <span class="idea-agent">(delusional_visionary)</span> Treat non-determinism as the test oracle itself: run the pipeline 1000 times with live LLM calls and assert that the *distribution* of state-file transitions has zero structural variance — if orchestr</div>
-<div class="idea-line"><span class="idea-id">[26]</span> <span class="idea-agent">(delusional_visionary)</span> Replace the test suite entirely with a formal specification language that compiles bash scripts directly from a state-machine DSL, making the implementation and its correctness proofs a single artifac</div>
-<div class="idea-line"><span class="idea-id">[27]</span> <span class="idea-agent">(delusional_visionary)</span> Use the LLM itself as the test harness: feed every state file produced by the pipeline back to a separate &quot;judge&quot; LLM that was trained exclusively on the pipeline's own schema contracts, and</div>
-<div class="idea-line"><span class="idea-id">[28]</span> <span class="idea-agent">(delusional_visionary)</span> Collapse the mock/real boundary by building a &quot;quantum superposition runner&quot; that executes every pipeline phase simultaneously against both a mock LLM and the real LLM, and flags any orchest</div>
-<div class="idea-line"><span class="idea-id">[29]</span> <span class="idea-agent">(delusional_visionary)</span> Invert the testing model entirely — instead of testing that the pipeline produces correct outputs, instrument each bash phase so it continuously tries to corrupt its own state file and then validates </div>
-<div class="idea-line"><span class="idea-id">[30]</span> <span class="idea-agent">(delusional_visionary)</span> Build a self-healing pipeline where the state machine is defined as a TLA+ specification, and at runtime each phase automatically model-checks the current global state against the spec before executin</div>
-<div class="idea-line"><span class="idea-id">[31]</span> <span class="idea-agent">(delusional_visionary)</span> Abolish regression tests in favor of a living diff engine: record every CI run's full structured trace permanently, and instead of asserting pass/fail, surface a semantic diff of orchestration behavio</div>
-<div class="idea-line"><span class="idea-id">[32]</span> <span class="idea-agent">(delusional_visionary)</span> Generate the entire test suite automatically by having an LLM analyze the bash scripts once, infer all implicit contracts and invariants, write them as executable BATS assertions, and then continuousl</div>
-<div class="idea-line"><span class="idea-id">[33]</span> <span class="idea-agent">(formal_methods_purist)</span> Define the pipeline state machine as a formal tuple (S, E, delta, s0, F) where S is the complete set of states, E the event alphabet, and delta the total transition function — any unspecified (state, </div>
-<div class="idea-line"><span class="idea-id">[34]</span> <span class="idea-agent">(formal_methods_purist)</span> The coverage-vs-reliability contradiction dissolves entirely once you acknowledge that coverage of orchestration correctness means coverage of invariants, not coverage of code paths — enumerate every </div>
-<div class="idea-line"><span class="idea-id">[35]</span> <span class="idea-agent">(formal_methods_purist)</span> Treat every JSON state file as a typed value in a formal schema language (JSON Schema or better, a dependently-typed spec), and assert not just structural conformance but semantic constraints such as </div>
-<div class="idea-line"><span class="idea-id">[36]</span> <span class="idea-agent">(formal_methods_purist)</span> Model ephemeral in-memory state and persistent disk state as two separate state spaces whose consistency is itself an invariant — the hidden coupling between these two spaces is where the most dangero</div>
-<div class="idea-line"><span class="idea-id">[37]</span> <span class="idea-agent">(formal_methods_purist)</span> Generate the test suite automatically from the formal state machine definition by enumerating all legal and illegal (state, event) pairs, so that adding a new state or transition simultaneously adds t</div>
-<div class="idea-line"><span class="idea-id">[38]</span> <span class="idea-agent">(formal_methods_purist)</span> Specify every phase as a Hoare triple {P} phase_script {Q} where P is the precondition on state files and environment and Q is the postcondition, and make the test harness mechanically verify that no </div>
-<div class="idea-line"><span class="idea-id">[39]</span> <span class="idea-agent">(formal_methods_purist)</span> Require that every error-handling path in the orchestration layer be reachable from a formally specified fault model — if a fault (timeout, malformed JSON, exit code non-zero) is not listed in the fau</div>
-<div class="idea-line"><span class="idea-id">[40]</span> <span class="idea-agent">(formal_methods_purist)</span> Adopt a monotonicity invariant as a first-class executable property: encode &quot;phase index never decreases except via an explicit retry event&quot; as a Hypothesis stateful rule that fires on every</div>
-<div class="idea-line"><span class="idea-id">[41]</span> <span class="idea-agent">(testing_economist)</span> The minimum viable test suite is BATS unit tests for state file I/O plus JSON Schema validation for inter-phase contracts — these two layers alone catch roughly 80% of orchestration regressions at und</div>
-<div class="idea-line"><span class="idea-id">[42]</span> <span class="idea-agent">(testing_economist)</span> Before building record/replay infrastructure, measure the actual frequency of multi-phase integration bugs over the past three months; if the answer is &quot;fewer than one per month,&quot; Layer 2 sc</div>
-<div class="idea-line"><span class="idea-id">[43]</span> <span class="idea-agent">(testing_economist)</span> Every proposed test layer must answer &quot;what is the most expensive bug this catches?&quot; — for this plugin, that answer is almost certainly a phase-transition error that silently corrupts a stat</div>
-<div class="idea-line"><span class="idea-id">[45]</span> <span class="idea-agent">(testing_economist)</span> A &quot;Layer 1.5&quot; of lightweight integration smoke tests — BATS scripts that chain two adjacent phases with fixture state files and assert only on output schema validity, not content — captures </div>
-<div class="idea-line"><span class="idea-id">[46]</span> <span class="idea-agent">(testing_economist)</span> Property-based stateful testing (Hypothesis) carries a hidden synchronization tax: the state machine model must be kept in sync with the bash implementation, creating two codebases that can diverge, s</div>
-<div class="idea-line"><span class="idea-id">[47]</span> <span class="idea-agent">(testing_economist)</span> Fault injection tests for LLM timeout and malformed-response handling have HIGH ROI because these failure modes are guaranteed to occur in production and the cost of a corrupted state file is hours of</div>
-<div class="idea-line"><span class="idea-id">[48]</span> <span class="idea-agent">(testing_economist)</span> Define a suite-level efficiency metric from day one — bugs caught per hour of test execution and bugs caught per hour of maintenance — so the team has an empirical signal for when the test suite's upk</div>
-</div></details>
-</div></details></div>
-<div class="section">
-  <details>
-    <summary><span style="font-size:1rem;">Round 2 — Piggybacking</span> <span style="font-size:0.8rem; color:#64748b; font-weight:400;">&mdash; 30 ideas from 6 agents, 0 deduped &rarr; 30 final</span></summary>
-    <div class="detail-body">
-      <details>
-        <summary style="color:#6366f1">null (5 ideas)</summary>
-        <div class="detail-body">
-<div class="idea-line"><span class="idea-id">1.</span> **INVERSION: The pipeline should test its environment, not the other way around.** Instead of an external test suite validating the pipeline, each pipeline invocation begins with a self-diagnostic phase that verifies: all required tools are installed and at compatible versions, all state files from </div>
-<div class="idea-line"><span class="idea-id">2.</span> **SUBTRACTION: Abolish state files entirely — use the filesystem as the state machine.** Remove JSON state files and instead represent state as a directory structure: the existence of `round1/compiled.md` means round 1 compilation is complete; the existence of `round2/` means round 2 has started. Ph</div>
-<div class="idea-line"><span class="idea-id">3.</span> **CROSS-DOMAIN (from biological immune systems): Adversarial co-evolution of tests and pipeline.** Build two LLM agents that co-evolve: one tries to generate inputs that break the pipeline's orchestration logic, the other patches the pipeline to survive. Run them in a loop. After N iterations, the p</div>
-<div class="idea-line"><span class="idea-id">4.</span> **INVERSION: Make non-determinism the security model.** Instead of mocking the LLM for determinism, run every critical phase with THREE different LLM calls and require 2-of-3 consensus on structural output (not content). If the orchestration is correct, all three produce structurally identical state</div>
-<div class="idea-line"><span class="idea-id">5.</span> **CROSS-DOMAIN (from compiler construction): Build an intermediate representation for pipeline execution.** Compile the bash pipeline into an IR (a directed acyclic graph of phase dependencies, data flows, and state mutations) before execution. Test the IR statically for: unreachable phases, cycles,</div>
-</div></details>
-      <details>
-        <summary style="color:#ec4899">null (5 ideas)</summary>
-        <div class="detail-body">
-<div class="idea-line"><span class="idea-id">1.</span> **INVERSION: Instead of writing tests, write a linter for the orchestration scripts.** A shellcheck-style linter that statically analyzes phase scripts for common orchestration anti-patterns — unguarded `jq` calls, state file writes without temp-then-rename, missing error traps in subshells, env var</div>
-<div class="idea-line"><span class="idea-id">2.</span> **SUBTRACTION: Remove the test infrastructure discussion and ship self-contained example scripts.** Instead of building a test framework, ship 5 example scripts in `examples/` that demonstrate: (a) adding a new phase, (b) modifying a state file schema, (c) handling an LLM failure, (d) running the pi</div>
-<div class="idea-line"><span class="idea-id">3.</span> **CROSS-DOMAIN (from API contract testing): Generate test stubs from state file diffs.** When a developer changes a state file's structure, a pre-commit hook diffs the old and new schema, and auto-generates a BATS test stub that validates the new fields. The developer fills in the expected values. T</div>
-<div class="idea-line"><span class="idea-id">4.</span> **INVERSION: Test by running the pipeline backwards.** Given a known-good final output, can the pipeline's own error-recovery logic reconstruct intermediate states? If each phase can validate its own preconditions and detect &quot;I'm being asked to redo work,&quot; then running backwards tests both</div>
-<div class="idea-line"><span class="idea-id">5.</span> **CROSS-DOMAIN (from game save systems): Checkpoint/restore snapshots for pipeline state.** Borrow the save-game pattern: before each phase, serialize the complete pipeline state to a snapshot file. Tests can restore any snapshot and re-run from that point. If the output diverges from the recorded s</div>
-</div></details>
-      <details>
-        <summary style="color:#f59e0b">null (5 ideas)</summary>
-        <div class="detail-body">
-<div class="idea-line"><span class="idea-id">1.</span> **INVERSION: Specify what the pipeline must NOT do, instead of what it must do.** Define a set of &quot;forbidden state predicates&quot; — invariants that must NEVER be true at any point during execution (e.g., &quot;two phases are both marked 'running' simultaneously,&quot; &quot;a state file conta</div>
-<div class="idea-line"><span class="idea-id">2.</span> **SUBTRACTION: Remove the state machine model and replace it with a constraint solver.** Instead of defining legal transitions and testing against them, define only the constraints (invariants) that must hold and let a constraint solver (Z3, or even a simpler SAT-based approach) verify that no seque</div>
-<div class="idea-line"><span class="idea-id">3.</span> **CROSS-DOMAIN (from type theory): Dependent types for state files via refinement predicates.** Move beyond JSON Schema's structural types to refinement types: `{ phase_status: &quot;complete&quot;, results: Array&lt;non-empty&gt; }` where the type of `results` depends on the value of `phase_status`</div>
-<div class="idea-line"><span class="idea-id">4.</span> **INVERSION: Instead of testing transitions, test the unreachable states.** Enumerate the state space and formally prove that certain states are unreachable from the initial state via any legal sequence of events. If a test run produces a state that was proven unreachable, the formal model is wrong </div>
-<div class="idea-line"><span class="idea-id">5.</span> **CROSS-DOMAIN (from hardware verification): Bounded model checking with increasing depth.** Apply bounded model checking to the pipeline: exhaustively explore all possible execution paths up to depth K (where K = number of phases). At K=1, verify all single-phase behaviors. At K=2, verify all two-p</div>
-</div></details>
-      <details>
-        <summary style="color:#10b981">null (5 ideas)</summary>
-        <div class="detail-body">
-<div class="idea-line"><span class="idea-id">1.</span> **INVERSION: Test the cleanup path, not the execution path.** Instead of testing &quot;does the pipeline produce correct output,&quot; test &quot;if I kill the pipeline at every possible point (SIGTERM, SIGKILL, OOM), is the state recoverable?&quot; Write a test harness that launches the pipeline an</div>
-<div class="idea-line"><span class="idea-id">2.</span> **SUBTRACTION: Remove background agents from the unit-test surface entirely.** The pre-mortem identified agent lifecycle as a missing domain. Instead of testing agent coordination in the pipeline, extract agent-spawn logic into a standalone &quot;agent supervisor&quot; script that can be tested inde</div>
-<div class="idea-line"><span class="idea-id">3.</span> **CROSS-DOMAIN (from Kubernetes liveness probes): Health-check contracts for each phase.** Each phase script exports a `healthcheck()` function that returns a machine-readable status: &quot;ready&quot;, &quot;running&quot;, &quot;degraded&quot;, &quot;failed&quot;. The test suite calls `healthcheck(</div>
-<div class="idea-line"><span class="idea-id">4.</span> **INVERSION: Make the state file the test harness, not the test target.** Instead of tests asserting on state file contents, embed validation rules directly in the state file format — a `_constraints` key that lists invariants the file must satisfy. A generic validator reads any state file, evaluate</div>
-<div class="idea-line"><span class="idea-id">5.</span> **CROSS-DOMAIN (from financial auditing): Append-only audit trail with tamper detection.** Every state file write appends a cryptographic hash of the previous state to the new state. A test can verify the hash chain at any point to detect: out-of-order writes, missing intermediate states, or state c</div>
-</div></details>
-      <details>
-        <summary style="color:#3b82f6">null (5 ideas)</summary>
-        <div class="detail-body">
-<div class="idea-line"><span class="idea-id">1.</span> **INVERSION: Measure the cost of NOT testing each component, rather than the ROI of testing it.** For each pipeline component, estimate the expected cost of a production failure (hours to diagnose + hours to fix + blast radius) multiplied by the probability of failure per month. Rank components by t</div>
-<div class="idea-line"><span class="idea-id">2.</span> **SUBTRACTION: Remove the test pyramid entirely and replace it with a single invariant monitor.** Instead of building five layers of tests, build one thing: a state-file invariant monitor that runs as a git pre-commit hook. It validates every state file in the repo against its schema and semantic co</div>
-<div class="idea-line"><span class="idea-id">3.</span> **CROSS-DOMAIN (from insurance actuarial science): Premium-based test allocation.** Treat each test as an insurance premium: you pay a known cost (maintenance hours) to protect against an uncertain loss (production bug). Use historical bug data (or estimates) to compute the &quot;loss ratio&quot; fo</div>
-<div class="idea-line"><span class="idea-id">4.</span> **INVERSION: Let production failures drive test creation, not speculation.** Instead of speculatively building tests for imagined failure modes, instrument the pipeline to emit machine-readable failure reports. Every production failure automatically generates a failing test case (the state files at </div>
-<div class="idea-line"><span class="idea-id">5.</span> **CROSS-DOMAIN (from venture capital): Test portfolio with options thinking.** Treat the test architecture as a portfolio of options, not a fixed plan. Layer 1 (BATS) is the &quot;safe investment&quot; — build it now. Layer 2 (schema validation) is a &quot;growth investment&quot; — build it next. La</div>
-</div></details>
-      <details>
-        <summary style="color:#8b5cf6">null (5 ideas)</summary>
-        <div class="detail-body">
-<div class="idea-line"><span class="idea-id">1.</span> **INVERSION: Extract the state machine from bash entirely.** Instead of testing bash scripts that contain state logic, extract the state transition table into a standalone JSON/YAML file that a trivial bash dispatcher reads. The dispatcher is 20 lines of bash (untestable things become trivially test</div>
-<div class="idea-line"><span class="idea-id">2.</span> **SUBTRACTION: Remove the mock layer entirely by making real scripts idempotent.** Instead of building a mock `call_llm()`, modify each phase script so that if the output state file already exists and is valid, the script exits 0 immediately. Testing becomes: pre-populate output fixtures, run the re</div>
-<div class="idea-line"><span class="idea-id">3.</span> **CROSS-DOMAIN (from database migrations): Schema versioning with forward/backward migration tests.** Borrow the migration-test pattern from Rails/Django: every state file schema change ships with an up/down migration script, and CI runs a test that loads state files from every previous schema versi</div>
-<div class="idea-line"><span class="idea-id">4.</span> **INVERSION: Test by diffing two pipeline runs instead of asserting expected output.** Instead of writing assertions for each phase, run the pipeline twice with different LLM fixture responses and diff the state file trees. Any structural difference (different keys, different phase transitions, diff</div>
-<div class="idea-line"><span class="idea-id">5.</span> **CROSS-DOMAIN (from distributed systems): Adopt a write-ahead log for state mutations.** Before any state file write, append the intended mutation to a WAL file. If the script crashes mid-write, the WAL enables recovery and also serves as a test assertion target — tests can assert on the WAL entrie</div>
-</div></details>
-      <details>
-        <summary>Compiled Board (30 ideas)</summary>
-        <div class="detail-body">
-<div class="idea-line"><span class="idea-id">[49]</span> <span class="idea-agent">(bash_whisperer)</span> INVERSION: Extract the state machine from bash entirely — move the transition table into a standalone JSON/YAML file that a trivial bash dispatcher reads, making the orchestration testable with any la</div>
-<div class="idea-line"><span class="idea-id">[50]</span> <span class="idea-agent">(bash_whisperer)</span> SUBTRACTION: Remove the mock layer entirely by making real scripts idempotent — if the output state file already exists and is valid, the script exits 0 immediately, so testing becomes pre-populating </div>
-<div class="idea-line"><span class="idea-id">[51]</span> <span class="idea-agent">(bash_whisperer)</span> CROSS-DOMAIN (database migrations): Schema versioning with forward/backward migration tests — every state file schema change ships with an up/down migration script, and CI validates state files from e</div>
-<div class="idea-line"><span class="idea-id">[52]</span> <span class="idea-agent">(bash_whisperer)</span> INVERSION: Test by diffing two pipeline runs with different LLM fixture responses — any structural difference is a regression; any content-only difference is expected.</div>
-<div class="idea-line"><span class="idea-id">[53]</span> <span class="idea-agent">(bash_whisperer)</span> CROSS-DOMAIN (distributed systems): Write-ahead log for state mutations — append intended mutations to a WAL before writing state files, enabling crash recovery and deterministic test assertions on in</div>
-<div class="idea-line"><span class="idea-id">[54]</span> <span class="idea-agent">(battle_scarred_sre)</span> INVERSION: Test the cleanup path, not the execution path — launch the pipeline and kill it at random delays (SIGTERM, SIGKILL, OOM), then assert state is either consistent or recoverable via a documen</div>
-<div class="idea-line"><span class="idea-id">[55]</span> <span class="idea-agent">(battle_scarred_sre)</span> SUBTRACTION: Remove background agents from the unit-test surface — extract agent-spawn logic into a standalone &quot;agent supervisor&quot; script testable in isolation for zombie reaping, SIGCHLD han</div>
-<div class="idea-line"><span class="idea-id">[56]</span> <span class="idea-agent">(battle_scarred_sre)</span> CROSS-DOMAIN (Kubernetes liveness probes): Health-check contracts — each phase script exports a `healthcheck()` function returning machine-readable status, and the test suite asserts lifecycle state c</div>
-<div class="idea-line"><span class="idea-id">[57]</span> <span class="idea-agent">(battle_scarred_sre)</span> INVERSION: Make the state file the test harness — embed validation rules as a `_constraints` key within the state file format itself, so a generic validator reads any state file and evaluates its own </div>
-<div class="idea-line"><span class="idea-id">[58]</span> <span class="idea-agent">(battle_scarred_sre)</span> CROSS-DOMAIN (financial auditing): Append-only audit trail with tamper detection — each state file write appends a cryptographic hash of the previous state, enabling hash-chain verification for out-of</div>
-<div class="idea-line"><span class="idea-id">[59]</span> <span class="idea-agent">(customer_voice)</span> INVERSION: Write a linter instead of tests — a shellcheck-style static analyzer for orchestration scripts that catches unguarded jq calls, non-atomic state writes, missing error traps, and env var rea</div>
-<div class="idea-line"><span class="idea-id">[60]</span> <span class="idea-agent">(customer_voice)</span> SUBTRACTION: Remove the test framework and ship self-contained example scripts — 5 examples in `examples/` that demonstrate adding a phase, modifying schema, handling LLM failure, running mock mode, a</div>
-<div class="idea-line"><span class="idea-id">[61]</span> <span class="idea-agent">(customer_voice)</span> CROSS-DOMAIN (API contract testing): Auto-generate test stubs from state file diffs — a pre-commit hook diffs old/new schema and generates BATS test stubs for the developer to fill in, reducing test-w</div>
-<div class="idea-line"><span class="idea-id">[62]</span> <span class="idea-agent">(customer_voice)</span> INVERSION: Test by running the pipeline backwards — given a known-good final output, use error-recovery logic to reconstruct intermediate states, testing both recovery and precondition checks simultan</div>
-<div class="idea-line"><span class="idea-id">[63]</span> <span class="idea-agent">(customer_voice)</span> CROSS-DOMAIN (game save systems): Checkpoint/restore snapshots at phase boundaries — serialize complete pipeline state before each phase, tests restore any snapshot and re-run from that point, detecti</div>
-<div class="idea-line"><span class="idea-id">[64]</span> <span class="idea-agent">(delusional_visionary)</span> INVERSION: The pipeline tests its environment, not the other way around — each invocation begins with a self-diagnostic phase verifying tool versions, state consistency, filesystem capabilities, and a</div>
-<div class="idea-line"><span class="idea-id">[65]</span> <span class="idea-agent">(delusional_visionary)</span> SUBTRACTION: Abolish state files entirely — represent state as a directory structure where file/directory existence IS the state (round1/compiled.md exists = round 1 compiled), making phase transition</div>
-<div class="idea-line"><span class="idea-id">[66]</span> <span class="idea-agent">(delusional_visionary)</span> CROSS-DOMAIN (biological immune systems): Adversarial co-evolution — two LLM agents co-evolve, one generating inputs that break orchestration logic and one patching the pipeline to survive, with the a</div>
-<div class="idea-line"><span class="idea-id">[67]</span> <span class="idea-agent">(delusional_visionary)</span> INVERSION: Non-determinism as security model — run every critical phase with THREE LLM calls requiring 2-of-3 structural consensus, merging testing and fault tolerance into one mechanism.</div>
-<div class="idea-line"><span class="idea-id">[68]</span> <span class="idea-agent">(delusional_visionary)</span> CROSS-DOMAIN (compiler construction): Compile the bash pipeline into an intermediate representation (DAG of phase dependencies, data flows, state mutations) and statically analyze it for unreachable p</div>
-<div class="idea-line"><span class="idea-id">[69]</span> <span class="idea-agent">(formal_methods_purist)</span> INVERSION: Specify forbidden state predicates instead of postconditions — define invariants that must NEVER be true at any execution point and monitor the full trace for violations, proving absence of</div>
-<div class="idea-line"><span class="idea-id">[70]</span> <span class="idea-agent">(formal_methods_purist)</span> SUBTRACTION: Replace the state machine model with a constraint solver — define only constraints/invariants and let Z3 or a SAT solver verify that no execution sequence can violate them, eliminating th</div>
-<div class="idea-line"><span class="idea-id">[71]</span> <span class="idea-agent">(formal_methods_purist)</span> CROSS-DOMAIN (type theory): Dependent/refinement types for state files — cross-field constraints like &quot;phase_status = complete implies results is non-empty&quot; implemented as jq-based validator</div>
-<div class="idea-line"><span class="idea-id">[72]</span> <span class="idea-agent">(formal_methods_purist)</span> INVERSION: Test unreachable states — formally prove certain states are unreachable from the initial state, then flag any test run that produces a &quot;proven unreachable&quot; state as either a spec </div>
-<div class="idea-line"><span class="idea-id">[73]</span> <span class="idea-agent">(formal_methods_purist)</span> CROSS-DOMAIN (hardware verification): Bounded model checking with increasing depth — exhaustively explore all execution paths up to depth K (K = number of phases), giving provable coverage guarantees </div>
-<div class="idea-line"><span class="idea-id">[74]</span> <span class="idea-agent">(testing_economist)</span> INVERSION: Measure cost of NOT testing each component — estimate expected loss (hours to diagnose + fix * probability of failure per month) and rank components by expected loss, testing the most expen</div>
-<div class="idea-line"><span class="idea-id">[75]</span> <span class="idea-agent">(testing_economist)</span> SUBTRACTION: Remove the test pyramid — replace all five layers with a single state-file invariant monitor running as a git pre-commit hook, one validator, zero test files to maintain.</div>
-<div class="idea-line"><span class="idea-id">[76]</span> <span class="idea-agent">(testing_economist)</span> CROSS-DOMAIN (insurance actuarial science): Premium-based test allocation — compute loss ratios (bug-value-caught / maintenance-cost) for each test category and allocate investment proportionally, zer</div>
-<div class="idea-line"><span class="idea-id">[77]</span> <span class="idea-agent">(testing_economist)</span> INVERSION: Let production failures drive test creation — instrument the pipeline to emit machine-readable failure reports that automatically become failing test cases with real state files as fixtures</div>
-<div class="idea-line"><span class="idea-id">[78]</span> <span class="idea-agent">(testing_economist)</span> CROSS-DOMAIN (venture capital): Options thinking for test architecture — build Layers 1-2 now, but for Layers 3-5 invest only in defining interfaces and extension points, preserving the option to buil</div>
-</div></details>
-</div></details></div>
-<div class="section">
-  <details>
-    <summary><span style="font-size:1rem;">Round 3 — Wild Card</span> <span style="font-size:0.8rem; color:#64748b; font-weight:400;">&mdash; 18 ideas from 6 agents, 0 deduped &rarr; 18 final</span></summary>
-    <div class="detail-body">
-      <details>
-        <summary style="color:#6366f1">null (3 ideas)</summary>
-        <div class="detail-body">
-<div class="idea-line"><span class="idea-id">1.</span> **Reframe 2 response — Prove pipeline correctness from the git history, not the code.** Treat the git log as a formal specification: each commit that modifies a phase script implicitly asserts &quot;this change preserves all existing invariants.&quot; Build a tool that replays the git history of sta</div>
-<div class="idea-line"><span class="idea-id">2.</span> **Reframe 1 response — A universal &quot;pipeline genome&quot; encoding.** Encode the pipeline's complete structure as a linear sequence (like DNA): phase order, input/output schemas, error handlers, timeout values, agent counts. Define mutation operators (add phase, remove handler, change schema). </div>
-<div class="idea-line"><span class="idea-id">3.</span> **Reframe 3 response — The pipeline becomes a distributed sensor network.** Every pipeline execution across every user is a sensor reading of the orchestration logic's health. Build a federated anomaly detection system: each user's local pipeline computes a structural fingerprint (hash of the phase </div>
-</div></details>
-      <details>
-        <summary style="color:#ec4899">null (3 ideas)</summary>
-        <div class="detail-body">
-<div class="idea-line"><span class="idea-id">1.</span> **Reframe 1 response — &quot;Test recipe&quot; templates for common pipeline modifications.** Ship a `test-recipes/` directory containing copy-paste-modify templates: &quot;I added a new phase,&quot; &quot;I changed a state file field,&quot; &quot;I added an error handler,&quot; &quot;I changed the </div>
-<div class="idea-line"><span class="idea-id">2.</span> **Reframe 3 response — Opt-in &quot;did it work?&quot; signal from real users.** After every pipeline run, prompt the user with a single yes/no question: &quot;Did this run produce the expected result?&quot; Store the answer alongside the structural trace. Aggregate across users. If a commit causes </div>
-<div class="idea-line"><span class="idea-id">3.</span> **Reframe 2 response — Dependency graph visualization as a testing artifact.** Generate a visual dependency graph (Mermaid or Graphviz DOT) from the bash scripts by statically parsing which scripts source which files, which scripts read/write which state files, and which scripts spawn which agents. </div>
-</div></details>
-      <details>
-        <summary style="color:#f59e0b">null (3 ideas)</summary>
-        <div class="detail-body">
-<div class="idea-line"><span class="idea-id">1.</span> **Reframe 2 response — Abstract interpretation of bash state transitions.** Build an abstract interpreter for the subset of bash used in phase scripts: track the abstract value of `$phase_status` (an enum), `$round_num` (a bounded integer), and `$state_file` (exists/absent/corrupted). Execute each s</div>
-<div class="idea-line"><span class="idea-id">2.</span> **Reframe 1 response — A portable state machine specification language that generates both tests and validators.** Define a DSL like: `phase &quot;round1&quot; requires [state_file_exists(&quot;problem.md&quot;)] produces [state_file(&quot;round1_compiled.md&quot;, schema: &quot;round1_schema&quot;)</div>
-<div class="idea-line"><span class="idea-id">3.</span> **Reframe 3 response — Invariant inference from production traces.** Collect structural execution traces from real pipeline runs (anonymized). Apply invariant inference (a la Daikon): automatically discover likely invariants such as &quot;round_num is always &lt;= 3&quot;, &quot;phase_status transit</div>
-</div></details>
-      <details>
-        <summary style="color:#10b981">null (3 ideas)</summary>
-        <div class="detail-body">
-<div class="idea-line"><span class="idea-id">1.</span> **Reframe 3 response — Canary deployments for pipeline changes.** When a developer modifies a phase script, deploy the change to 10% of pipeline runs (via a feature flag in the env) and compare the structural trace distributions between canary and baseline. If the canary produces different phase tra</div>
-<div class="idea-line"><span class="idea-id">2.</span> **Reframe 2 response — Symbolic execution of bash error paths.** Use a bash symbolic executor (or build a lightweight one using bash's `-n` parse mode plus manual variable tracking) to enumerate all paths through each phase script. For each path, determine: does it reach a state file write? Does it </div>
-<div class="idea-line"><span class="idea-id">3.</span> **Reframe 1 response — &quot;Pipeline crash black box&quot; recorder.** Build a generic wrapper that captures the complete execution context at the moment of any pipeline failure: all env vars, all state files, the structured trace up to the crash point, the stderr output, and the process tree. Pack</div>
-</div></details>
-      <details>
-        <summary style="color:#3b82f6">null (3 ideas)</summary>
-        <div class="detail-body">
-<div class="idea-line"><span class="idea-id">1.</span> **Reframe 2 response — Cost-benefit analysis of static vs. dynamic testing for this specific codebase.** Estimate: the codebase has ~20 bash scripts averaging ~100 lines each. Static analysis (linting + dataflow) covers ~60% of bug classes at ~8 hours of setup and ~0 hours/month maintenance. Dynamic</div>
-<div class="idea-line"><span class="idea-id">2.</span> **Reframe 3 response — The &quot;cost of a wasted run&quot; metric as the ultimate test KPI.** For this plugin, a failed pipeline run wastes the user's time and LLM API credits. Define the KPI: &quot;wasted run rate&quot; = (runs that failed due to orchestration bugs) / (total runs). Track this metr</div>
-<div class="idea-line"><span class="idea-id">3.</span> **Reframe 1 response — Open-source the testing framework to amortize maintenance cost.** If the testing framework is generalized (per Reframe 1), open-sourcing it means the maintenance cost is shared across all users. Other bash-pipeline projects contribute fixes, patterns, and test recipes. The plu</div>
-</div></details>
-      <details>
-        <summary style="color:#8b5cf6">null (3 ideas)</summary>
-        <div class="detail-body">
-<div class="idea-line"><span class="idea-id">1.</span> **Reframe 2 response — Static dataflow analysis of bash scripts via ShellCheck AST.** Parse each phase script into ShellCheck's AST (using `shellcheck --format=json`), then write a custom analyzer that traces the dataflow of state file variables: which functions read `$STATE_DIR/*.json`, which write</div>
-<div class="idea-line"><span class="idea-id">2.</span> **Reframe 1 response — Extract a reusable `bash-pipeline-test-kit` library.** Factor out the testing patterns from this plugin into a generic library: `bpt_assert_state_schema`, `bpt_mock_boundary`, `bpt_checkpoint_restore`, `bpt_trace_verify`. Any bash pipeline that follows a state-file-per-phase c</div>
-<div class="idea-line"><span class="idea-id">3.</span> **Reframe 3 response — Structural telemetry from production runs as regression canary.** Instrument the pipeline to emit a content-free structural trace on every real user run: phase names, transition edges, timing buckets (fast/medium/slow), error codes, state file sizes (not contents). Collect the</div>
-</div></details>
-      <details>
-        <summary>Compiled Board (18 ideas)</summary>
-        <div class="detail-body">
-<div class="idea-line"><span class="idea-id">[79]</span> <span class="idea-agent">(bash_whisperer)</span> Static dataflow analysis of bash scripts via ShellCheck AST — parse phase scripts into ShellCheck's JSON AST, trace state file variable dataflow, and catch non-atomic writes, unvalidated reads, and de</div>
-<div class="idea-line"><span class="idea-id">[80]</span> <span class="idea-agent">(bash_whisperer)</span> Extract a reusable `bash-pipeline-test-kit` library — factor out testing patterns into generic helpers (`bpt_assert_state_schema`, `bpt_mock_boundary`, `bpt_checkpoint_restore`, `bpt_trace_verify`) us</div>
-<div class="idea-line"><span class="idea-id">[81]</span> <span class="idea-agent">(bash_whisperer)</span> Structural telemetry from production runs as regression canary — emit content-free structural traces (phase names, transition edges, timing buckets, error codes, state file sizes) to a local SQLite da</div>
-<div class="idea-line"><span class="idea-id">[82]</span> <span class="idea-agent">(battle_scarred_sre)</span> Canary deployments for pipeline changes — deploy changes to 10% of pipeline runs via feature flag and compare structural trace distributions between canary and baseline, blocking rollout on divergent </div>
-<div class="idea-line"><span class="idea-id">[83]</span> <span class="idea-agent">(battle_scarred_sre)</span> Symbolic execution of bash error paths — enumerate all paths through each phase script using bash parse mode plus variable tracking, identifying error paths that silently succeed, success paths reachi</div>
-<div class="idea-line"><span class="idea-id">[84]</span> <span class="idea-agent">(battle_scarred_sre)</span> &quot;Pipeline crash black box&quot; recorder — capture complete execution context at failure (env vars, state files, structured trace, stderr, process tree) as a self-contained reproduction archive w</div>
-<div class="idea-line"><span class="idea-id">[85]</span> <span class="idea-agent">(customer_voice)</span> &quot;Test recipe&quot; templates for common pipeline modifications — copy-paste-modify templates in `test-recipes/` for common changes (add phase, change schema field, add error handler, change agent</div>
-<div class="idea-line"><span class="idea-id">[86]</span> <span class="idea-agent">(customer_voice)</span> Opt-in &quot;did it work?&quot; signal from real users — single yes/no prompt after each pipeline run, stored alongside structural trace, aggregated across users to detect regression spikes from speci</div>
-<div class="idea-line"><span class="idea-id">[87]</span> <span class="idea-agent">(customer_voice)</span> Dependency graph visualization as testing artifact — auto-generate Mermaid/Graphviz DOT graphs from static parsing of script sourcing, state file I/O, and agent spawning relationships, rendered on eve</div>
-<div class="idea-line"><span class="idea-id">[88]</span> <span class="idea-agent">(delusional_visionary)</span> Prove pipeline correctness from git history — replay git log of state machine changes and verify at each commit that the transition table remains consistent (no unreachable states, no broken monotonic</div>
-<div class="idea-line"><span class="idea-id">[89]</span> <span class="idea-agent">(delusional_visionary)</span> Universal &quot;pipeline genome&quot; encoding — encode pipeline structure as a linear sequence (phase order, schemas, handlers, timeouts, agent counts), define mutation operators, and verify a fitnes</div>
-<div class="idea-line"><span class="idea-id">[90]</span> <span class="idea-agent">(delusional_visionary)</span> Federated structural fingerprinting across all users — each local pipeline computes a hash of its phase transition graph + timing distribution and submits only the fingerprint to a central aggregator </div>
-<div class="idea-line"><span class="idea-id">[91]</span> <span class="idea-agent">(formal_methods_purist)</span> Abstract interpretation of bash state transitions — build an abstract interpreter tracking `$phase_status` (enum), `$round_num` (bounded int), and `$state_file` (exists/absent/corrupted) and execute s</div>
-<div class="idea-line"><span class="idea-id">[92]</span> <span class="idea-agent">(formal_methods_purist)</span> Portable state machine specification DSL — a single specification like `phase &quot;round1&quot; requires [...] produces [...] transitions_to [...]` that generates BATS tests, JSON Schema validators, </div>
-<div class="idea-line"><span class="idea-id">[93]</span> <span class="idea-agent">(formal_methods_purist)</span> Invariant inference from production traces via Daikon-style analysis — collect anonymized structural traces, automatically discover likely invariants, and promote high-confidence inferred invariants t</div>
-<div class="idea-line"><span class="idea-id">[94]</span> <span class="idea-agent">(testing_economist)</span> Cost-benefit analysis favoring static analysis — estimated 60% bug class coverage at 8 hours setup / 0 maintenance vs. 85% from dynamic testing at 40 hours setup / 4 hours/month, making static analysi</div>
-<div class="idea-line"><span class="idea-id">[95]</span> <span class="idea-agent">(testing_economist)</span> &quot;Wasted run rate&quot; as the ultimate test KPI — define (orchestration-bug-caused failures / total runs), track from production telemetry, and justify every testing investment by its quantifiabl</div>
-<div class="idea-line"><span class="idea-id">[96]</span> <span class="idea-agent">(testing_economist)</span> Open-source the testing framework to amortize maintenance cost — generalize and release the framework so community contributions reduce the plugin team's net maintenance cost toward zero.</div>
-</div></details>
-</div></details></div>
-<div class="section"><details><summary><span style="font-size:1rem;">Evaluation</span> <span style="font-size:0.8rem; color:#64748b; font-weight:400;">&mdash; 8 clusters, scored &amp; ranked</span></summary><div class="detail-body">
-<details><summary>Clusters (8)</summary><div class="detail-body">
-<div class="cluster-detail"><div class="cluster-name"><span class="cluster-chip">&quot;The Foundation&quot; — LLM Boundary &amp; Test Infrastructure</span> <span style="font-size:0.75rem;color:#64748b;">(0
-? ideas)</span></div><div class="cluster-ideas">Ideas: </div></div>
-<div class="cluster-detail"><div class="cluster-name"><span class="cluster-chip">&quot;The Validation Stack&quot; — Schema &amp; Semantic Validation</span> <span style="font-size:0.75rem;color:#64748b;">(0
-? ideas)</span></div><div class="cluster-ideas">Ideas: </div></div>
-<div class="cluster-detail"><div class="cluster-name"><span class="cluster-chip">&quot;The State Machine&quot; — Formal Modeling &amp; Test Generation</span> <span style="font-size:0.75rem;color:#64748b;">(0
-? ideas)</span></div><div class="cluster-ideas">Ideas: </div></div>
-<div class="cluster-detail"><div class="cluster-name"><span class="cluster-chip">&quot;The Resilience Layer&quot; — Fault Injection &amp; Recovery</span> <span style="font-size:0.75rem;color:#64748b;">(0
-? ideas)</span></div><div class="cluster-ideas">Ideas: </div></div>
-<div class="cluster-detail"><div class="cluster-name"><span class="cluster-chip">&quot;The Developer Experience&quot; — Adoption &amp; Friction Reduction</span> <span style="font-size:0.75rem;color:#64748b;">(0
-? ideas)</span></div><div class="cluster-ideas">Ideas: </div></div>
-<div class="cluster-detail"><div class="cluster-name"><span class="cluster-chip">&quot;The Production Feedback Loop&quot; — Telemetry &amp; Auto-Testing</span> <span style="font-size:0.75rem;color:#64748b;">(0
-? ideas)</span></div><div class="cluster-ideas">Ideas: </div></div>
-<div class="cluster-detail"><div class="cluster-name"><span class="cluster-chip">&quot;The Integration Layer&quot; — Multi-Phase &amp; End-to-End</span> <span style="font-size:0.75rem;color:#64748b;">(0
-? ideas)</span></div><div class="cluster-ideas">Ideas: </div></div>
-<div class="cluster-detail"><div class="cluster-name"><span class="cluster-chip">&quot;The Economic Framework&quot; — Prioritization &amp; Measurement</span> <span style="font-size:0.75rem;color:#64748b;">(0
-? ideas)</span></div><div class="cluster-ideas">Ideas: </div></div>
-</div></details>
-<details><summary>Top Ranked Ideas</summary><div class="detail-body">
-<div class="idea-row"><span class="rank">#1</span><span class="idea-text">#1. [46] (bash_whisperer) Extract the state machine from bash — Score: 18</span></div>
-<div class="idea-row"><span class="rank">#2</span><span class="idea-text">#2. [1] (bash_whisperer) Single `call_llm()` boundary function — Score: 18</span></div>
-<div class="idea-row"><span class="rank">#3</span><span class="idea-text">#3. [66] (formal_methods_purist) Forbidden state predicates — Score: 18</span></div>
-<div class="idea-row"><span class="rank">#4</span><span class="idea-text">#4. [68] (formal_methods_purist) Refinement types for state files via jq — Score: 18</span></div>
-<div class="idea-row"><span class="rank">#5</span><span class="idea-text">#5. [89] (formal_methods_purist) State machine specification DSL — Score: 18</span></div>
-<div class="idea-row"><span class="rank">#6</span><span class="idea-text">#6. [81] (battle_scarred_sre) Pipeline crash black box recorder — Score: 18</span></div>
-<div class="idea-row"><span class="rank">#7</span><span class="idea-text">#7. [74] (testing_economist) Production failures drive test creation — Score: 17</span></div>
-<div class="idea-row"><span class="rank">#8</span><span class="idea-text">#8. [42] (testing_economist) Layer 1.5 adjacent-phase smoke tests — Score: 17</span></div>
-<div class="idea-row"><span class="rank">#9</span><span class="idea-text">#9. [48] (bash_whisperer) Schema migration testing — Score: 17</span></div>
-<div class="idea-row"><span class="rank">#10</span><span class="idea-text">#10. [82] (customer_voice) Test recipe templates — Score: 17</span></div>
-</div></details>
-<details><summary>Moonshots (6)</summary><div class="detail-body">
-<div class="combo-card"><div class="combo-title" style="color:#fef08a">Moonshot 1: [23] Statistical Oracle — Non-determinism as test signal</div>
-</div>
-<div class="combo-card"><div class="combo-title" style="color:#fef08a">Moonshot 2: [29] Living Diff Engine — Replace pass/fail with behavioral diffs</div>
-</div>
-<div class="combo-card"><div class="combo-title" style="color:#fef08a">Moonshot 3: [27] Self-Corrupting Phases — Production runs as chaos tests</div>
-</div>
-<div class="combo-card"><div class="combo-title" style="color:#fef08a">Moonshot 4: [64] 2-of-3 LLM Consensus — Non-determinism as fault tolerance</div>
-</div>
-<div class="combo-card"><div class="combo-title" style="color:#fef08a">Moonshot 5: [89] State Machine DSL — Single source of truth</div>
-</div>
-<div class="combo-card"><div class="combo-title" style="color:#fef08a">Moonshot 6: [66] Forbidden State Predicates</div>
-</div>
-</div></details>
-<details><summary>Combinations (0)</summary><div class="detail-body">
-</div></details>
-</div></details></div>
-<div class="grid-2">
-<div class="section"><h2>Top Ranked Ideas</h2>
-<div class="idea-row"><span class="rank">#1</span><span class="idea-text">#1. [46] (bash_whisperer) Extract the state machine from bash — Score: 18</span></div>
-<div class="idea-row"><span class="rank">#2</span><span class="idea-text">#2. [1] (bash_whisperer) Single `call_llm()` boundary function — Score: 18</span></div>
-<div class="idea-row"><span class="rank">#3</span><span class="idea-text">#3. [66] (formal_methods_purist) Forbidden state predicates — Score: 18</span></div>
-<div class="idea-row"><span class="rank">#4</span><span class="idea-text">#4. [68] (formal_methods_purist) Refinement types for state files via jq — Score: 18</span></div>
-<div class="idea-row"><span class="rank">#5</span><span class="idea-text">#5. [89] (formal_methods_purist) State machine specification DSL — Score: 18</span></div>
-</div>
-<div class="section"><h2>Moonshots</h2>
-<div class="moonshot-chip">Moonshot 1: [23] Statistical Oracle — Non-determinism as test signal</div>
-<div class="moonshot-chip">Moonshot 2: [29] Living Diff Engine — Replace pass/fail with behavioral diffs</div>
-<div class="moonshot-chip">Moonshot 3: [27] Self-Corrupting Phases — Production runs as chaos tests</div>
-<div class="moonshot-chip">Moonshot 4: [64] 2-of-3 LLM Consensus — Non-determinism as fault tolerance</div>
-<div class="moonshot-chip">Moonshot 5: [89] State Machine DSL — Single source of truth</div>
-</div>
-</div>
-<div class="section" style="border-left: 3px solid #fbbf24;">
-<h2>Red Team Findings (0)</h2>
-<details><summary>Full Details</summary><div class="detail-body">
-<div class="rt-field">**Mitigation**: Do not extract the state machine in week 1. Instead, start by documenting the existing implicit state machine as-is (just a Mermaid diagram + a JSON file describing the transitions you observe). Use this documentation to write tests against the existing scripts. Only refactor toward a data-driven dispatcher after the documentation proves accurate.</div>
-<div class="rt-field">**Mitigation**: Before implementing anything, trace the actual LLM call paths in the existing codebase. Map every point where an LLM interaction originates. If agent processes make their own LLM calls, the boundary strategy must be at the agent-spawn level (mock the agent), not the LLM-call level.</div>
-<div class="rt-field">**Mitigation**: Before writing schemas, run the pipeline 20 times with varied inputs and collect all generated state files. Write schemas that are the intersection (what is always true) rather than the union (what is ever true). Mark uncertain fields as optional rather than guessing.</div>
-<div class="rt-field">**Mitigation**: Start with a simpler KPI: &quot;test suite execution time&quot; and &quot;number of tests.&quot; These are measurable immediately, do not require classification, and correlate with the quality of the test infrastructure even if they do not directly measure production impact.</div>
-<div class="rt-field">**Mitigation**: Redefine the plan as a series of independently valuable increments rather than a sequential 6-week project. Each increment should deliver a standalone improvement that is useful even if the plan stops there. The minimum increment is: call_llm boundary + 5 error-path BATS tests + jq-e structural validation. Everything after that is optional and order-independent.</div>
-</div></details></div>
-<div class="section" style="border-left: 3px solid #10b981;"><h2>Executive Arbiter</h2>
-<div class="grid-2"><div>
-<div style="font-size:0.8rem;color:#ef4444;font-weight:600;margin-bottom:0.5rem;">KILLED (0)</div>
-</div><div>
-<div style="font-size:0.8rem;color:#10b981;font-weight:600;margin-bottom:0.5rem;">KEPT &amp; SEQUENCED (0 phases)</div>
-</div></div>
-<details><summary>Red Team Rulings</summary><div class="detail-body">
-</div></details>
-<details><summary>Execution Phases Detail</summary><div class="detail-body">
-</div></details>
-</div>
-<div class="footer">
-  Generated by brainstorm-generate-digest.sh &middot; Session: brainstorm-testing-nondeterministic-plugin-20260319-143543 &middot; 2026-03-19 15:08
-</div>
-</body>
-</html>
