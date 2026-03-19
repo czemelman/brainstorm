@@ -491,14 +491,16 @@ echo '</div>' >> "$OUT"
 # ═══════════════════════════════════════════════════════════════════════════
 REDTEAM_FILE="$SD/output/red_team_memo.md"
 if [ -f "$REDTEAM_FILE" ]; then
-  # Match any ## or ### heading that looks like a finding (Vulnerability, Failure, numbered, etc.)
-  NUM_FAILURES=$(grep -cE '^##+ .*(Vulnerability|Failure|Finding|Risk|[0-9]+[.):])' "$REDTEAM_FILE" 2>/dev/null || true)
-  [ "$NUM_FAILURES" -eq 0 ] && NUM_FAILURES=$(grep -cE '^##+ [^#]' "$REDTEAM_FILE" 2>/dev/null || true)
+  # Count findings: prefer ### (specific items) over ## (section headings)
+  NUM_FAILURES=$(grep -cE '^### ' "$REDTEAM_FILE" 2>/dev/null || true)
+  [ "$NUM_FAILURES" -eq 0 ] && NUM_FAILURES=$(grep -cE '^## .*(Vulnerability|Failure|Finding|Risk|[0-9]+)' "$REDTEAM_FILE" 2>/dev/null || true)
   echo '<div class="section" style="border-left: 3px solid #fbbf24;">' >> "$OUT"
   echo "<h2>Red Team Findings ($NUM_FAILURES)</h2>" >> "$OUT"
 
-  # Summary items — extract any heading that looks like a specific finding
-  { grep -E '^## .*(Vulnerability|Failure|Finding|Risk|[0-9]+[.):])' "$REDTEAM_FILE" 2>/dev/null || grep -E '^### .*[0-9]' "$REDTEAM_FILE" 2>/dev/null || true; } | head -5 | while IFS= read -r line; do
+  # Summary items — prefer ### (specific numbered findings), fall back to ## section headings
+  RT_ITEMS=$(grep -E '^### ' "$REDTEAM_FILE" 2>/dev/null || true)
+  [ -z "$RT_ITEMS" ] && RT_ITEMS=$(grep -E '^## .*(Vulnerability|Failure|Finding|Risk|[0-9]+)' "$REDTEAM_FILE" 2>/dev/null || true)
+  echo "$RT_ITEMS" | head -5 | while IFS= read -r line; do
     TITLE=$(echo "$line" | sed 's/^#*[[:space:]]*//' | html_escape)
     echo "<div class=\"redteam-item\"><span class=\"warn-icon\">&#9888;</span> $TITLE</div>" >> "$OUT"
   done
