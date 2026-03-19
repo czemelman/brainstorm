@@ -94,8 +94,12 @@ if [ "$SEED_ROUNDS_OVERRIDE" != "null" ]; then
 fi
 
 # ── Build agents array with rounds tracking ──────────────────────────────────
+# Normalize fields: setup agents may use archetype/perspective instead of
+# display_name/persona_prompt. Derive display_name from name if missing.
 AGENTS=$(jq --argjson rp "$ROUNDS_PENDING" \
   '[.agents[] | . + {
+    display_name: (if (.display_name // null) != null and (.display_name | length) > 0 then .display_name else (.name | split("_") | map((.[0:1] | ascii_upcase) + .[1:]) | join(" ")) end),
+    persona_prompt: (.persona_prompt // .perspective // .archetype // .cognitive_role // ""),
     rounds_completed: [],
     rounds_pending: $rp,
     briefing_file: ("feed/" + .name + "_briefing.md")

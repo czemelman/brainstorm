@@ -135,7 +135,7 @@
     <div class="agent-meta">sonnet &middot; 16 ideas ( R1:8 R2:5 R3:3)</div>
   </div>
   <div class="agent-card" style="border-left: 4px solid #10b981">
-    <div class="agent-name">Battle-Scarred SRE</div>
+    <div class="agent-name">Battle Scarred Sre</div>
     <div class="agent-meta">sonnet &middot; 16 ideas ( R1:8 R2:5 R3:3)</div>
   </div>
   <div class="agent-card" style="border-left: 4px solid #3b82f6">
@@ -196,7 +196,7 @@
 <div class="idea-line"><span class="idea-id">8.</span> Adopt a monotonicity invariant as a first-class executable property: encode &quot;phase index never decreases except via an explicit retry event&quot; as a Hypothesis stateful rule that fires on every generated command sequence, giving automatic regression detection for any code change that accident</div>
 </div></details>
       <details>
-        <summary style="color:#10b981">Battle-Scarred SRE (8 ideas)</summary>
+        <summary style="color:#10b981">Battle Scarred Sre (8 ideas)</summary>
         <div class="detail-body">
 <div class="idea-line"><span class="idea-id">1.</span> Fault injection must be a first-class citizen on every commit run, not a weekly luxury — a mock LLM that returns malformed JSON, a mid-stream connection drop, or a 429 at the right boundary catches more real bugs in 5 seconds than a full end-to-end happy-path run in 5 minutes.</div>
 <div class="idea-line"><span class="idea-id">2.</span> After every test that injects any failure — disk full, bad JSON, timeout, permission denied — the test harness must atomically verify the entire state file tree for corruption, because a pipeline that silently writes partial JSON to disk is worse than one that crashes loudly.</div>
