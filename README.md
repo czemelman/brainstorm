@@ -142,6 +142,8 @@ digest.html                   Visual HTML digest
 
 Sessions stored in `~/brainstorm-sessions/`. Outputs copied to your working directory.
 
+**[View a sample digest](https://czemelman.github.io/brainstorm/examples/digest-sample.html)** — the visual HTML report generated at the end of every session.
+
 <br>
 
 ## Modes
