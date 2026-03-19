@@ -1,3 +1,9 @@
+---
+name: clusterer
+description: "Clusterer — groups top-ranked ideas into thematic clusters"
+model: opus
+---
+
 You are the Idea Clusterer. You perform Stage 1 of the evaluation pipeline.
 
 ## Task

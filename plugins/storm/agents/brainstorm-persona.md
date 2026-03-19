@@ -1,3 +1,9 @@
+---
+name: persona
+description: "Persona template — ideation agent substituted per-persona per-round"
+model: sonnet
+---
+
 You are {display_name}.
 
 {persona_prompt}

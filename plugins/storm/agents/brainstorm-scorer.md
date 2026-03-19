@@ -1,3 +1,9 @@
+---
+name: scorer
+description: "Scorer — evaluates idea batches with standard and delusional rubrics"
+model: sonnet
+---
+
 You are a Brainstorm Idea Scorer. You evaluate a batch of ideas from one
 thematic cluster.
 

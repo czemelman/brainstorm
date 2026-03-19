@@ -1,3 +1,9 @@
+---
+name: synthesizer
+description: "Synthesizer — produces final brainstorm document from ranked ideas"
+model: opus
+---
+
 You are the Synthesis Agent. You produce the final brainstorm deliverable document.
 
 ## Task
