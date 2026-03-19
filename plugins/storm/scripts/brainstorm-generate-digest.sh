@@ -538,101 +538,51 @@ fi
 if [ -f "$ARBITER_FILE" ]; then
   echo '<div class="section" style="border-left: 3px solid #10b981;"><h2>Executive Arbiter</h2>' >> "$OUT"
 
-  ARBITER_VERDICT=$({ grep '^\*\*Arbiter verdict:\*\*' "$ARBITER_FILE" 2>/dev/null || true; } | head -1 | sed 's/\*\*Arbiter verdict:\*\*[[:space:]]*//' | html_escape)
-  [ -n "$ARBITER_VERDICT" ] && echo "<div class=\"verdict-box\">$ARBITER_VERDICT</div>" >> "$OUT"
+  # ── Execution Phases (## headings that look like phases/steps) ──────────
+  NUM_PHASES=$(grep -cE '^## Phase [0-9]|^## Step [0-9]|^## [0-9]+\.' "$ARBITER_FILE" 2>/dev/null || true)
+  if [ "$NUM_PHASES" -gt 0 ]; then
+    echo "<div style=\"font-size:0.8rem;color:#10b981;font-weight:600;margin-bottom:0.5rem;\">EXECUTION PHASES ($NUM_PHASES)</div>" >> "$OUT"
+    { grep -E '^## Phase [0-9]|^## Step [0-9]|^## [0-9]+\.' "$ARBITER_FILE" 2>/dev/null || true; } | while IFS= read -r line; do
+      TITLE=$(echo "$line" | sed 's/^##[[:space:]]*//' | html_escape)
+      echo "<div class=\"kept-item\">&#9989; $TITLE</div>" >> "$OUT"
+    done
+  fi
 
-  # Killed vs Kept (summary)
-  NUM_KILLED=$(grep -cE '^\- \*\*KILLED:' "$ARBITER_FILE" 2>/dev/null || true)
-  NUM_KEPT=$(grep -cE '^### Phase [0-9]+' "$ARBITER_FILE" 2>/dev/null || true)
-
-  echo '<div class="grid-2"><div>' >> "$OUT"
-  echo "<div style=\"font-size:0.8rem;color:#ef4444;font-weight:600;margin-bottom:0.5rem;\">KILLED ($NUM_KILLED)</div>" >> "$OUT"
-  { grep -E '^\- \*\*KILLED:' "$ARBITER_FILE" 2>/dev/null || true; } | while IFS= read -r line; do
-    ITEM=$(echo "$line" | sed 's/^-[[:space:]]*\*\*KILLED:[[:space:]]*//' | sed 's/\*\*.*//' | html_escape)
-    echo "<div class=\"killed-item\">&#10060; $ITEM</div>" >> "$OUT"
-  done
-  echo '</div><div>' >> "$OUT"
-  echo "<div style=\"font-size:0.8rem;color:#10b981;font-weight:600;margin-bottom:0.5rem;\">KEPT &amp; SEQUENCED ($NUM_KEPT phases)</div>" >> "$OUT"
-  { grep -E '^### Phase [0-9]+' "$ARBITER_FILE" 2>/dev/null || true; } | while IFS= read -r line; do
-    TITLE=$(echo "$line" | sed 's/^###[[:space:]]*//' | html_escape)
-    echo "<div class=\"kept-item\">&#9989; $TITLE</div>" >> "$OUT"
-  done
-  echo '</div></div>' >> "$OUT"
-
-  # Drill-down: Red Team Rulings
-  echo '<details><summary>Red Team Rulings</summary><div class="detail-body">' >> "$OUT"
-  # Extract rulings between ### headers under "## Red Team Rulings"
-  IN_RULINGS=false
-  while IFS= read -r line; do
-    if echo "$line" | grep -qE '^## Red Team Rulings'; then
-      IN_RULINGS=true; continue
-    fi
-    [ "$IN_RULINGS" = "false" ] && continue
-    echo "$line" | grep -qE '^## ' && break
-    if echo "$line" | grep -qE '^### '; then
-      TITLE=$(echo "$line" | sed 's/^###[[:space:]]*//' | html_escape)
-      echo "<div class=\"rt-detail\"><div style=\"font-weight:600;\">$TITLE</div>" >> "$OUT"
-    elif echo "$line" | grep -qE '^\*\*Ruling:\*\*'; then
-      RULING=$(echo "$line" | sed 's/\*\*Ruling:\*\*[[:space:]]*//' | html_escape)
-      RCOLOR="#94a3b8"
-      echo "$RULING" | grep -qi 'KILL' && RCOLOR="#fca5a5"
-      echo "$RULING" | grep -qi 'MITIGATE' && RCOLOR="#fef08a"
-      echo "$RULING" | grep -qi 'ACCEPT' && RCOLOR="#bbf7d0"
-      echo "<div class=\"rt-field\" style=\"color:$RCOLOR; font-weight:600;\">$RULING</div>" >> "$OUT"
-    elif echo "$line" | grep -qE '^\*\*'; then
-      TEXT=$(echo "$line" | html_escape)
-      echo "<div class=\"rt-field\">$TEXT</div>" >> "$OUT"
-    elif echo "$line" | grep -qE '^$'; then
-      echo "</div>" >> "$OUT"
-    fi
-  done < "$ARBITER_FILE"
-  echo '</div></details>' >> "$OUT"
-
-  # Drill-down: Execution Phases detail
-  echo '<details><summary>Execution Phases Detail</summary><div class="detail-body">' >> "$OUT"
-  IN_KEPT=false
-  while IFS= read -r line; do
-    if echo "$line" | grep -qE '^## Ideas Kept'; then
-      IN_KEPT=true; continue
-    fi
-    [ "$IN_KEPT" = "false" ] && continue
-    echo "$line" | grep -qE '^## Kill Triggers|^## The One Thing' && break
-    if echo "$line" | grep -qE '^### Phase'; then
-      TITLE=$(echo "$line" | sed 's/^###[[:space:]]*//' | html_escape)
-      echo "<div class=\"combo-card\"><div class=\"combo-title\" style=\"color:#bbf7d0\">$TITLE</div>" >> "$OUT"
-    elif echo "$line" | grep -qE '^\*\*'; then
-      TEXT=$(echo "$line" | html_escape)
-      echo "<div class=\"combo-desc\">$TEXT</div>" >> "$OUT"
-    elif echo "$line" | grep -qE '^$' && [ "$IN_KEPT" = "true" ]; then
-      echo "</div>" >> "$OUT"
-    fi
-  done < "$ARBITER_FILE"
-  echo '</div></details>' >> "$OUT"
-
-  # Kill Triggers
-  KILL_TRIGGERS=""
-  IN_TRIGGERS=false
-  while IFS= read -r line; do
-    if echo "$line" | grep -qE '^## Kill Triggers'; then
-      IN_TRIGGERS=true; continue
-    fi
-    [ "$IN_TRIGGERS" = "false" ] && continue
-    echo "$line" | grep -qE '^## ' && break
-    if echo "$line" | grep -qE '^- '; then
-      TEXT=$(echo "$line" | sed 's/^- //' | html_escape)
-      KILL_TRIGGERS="$KILL_TRIGGERS<div class=\"killed-item\" style=\"color:#fef08a;\">&#9889; $TEXT</div>"
-    fi
-  done < "$ARBITER_FILE"
-  if [ -n "$KILL_TRIGGERS" ]; then
-    echo '<details><summary>Kill Triggers</summary><div class="detail-body">' >> "$OUT"
-    echo "$KILL_TRIGGERS" >> "$OUT"
+  # ── Red Team Verdicts (### headings + **Verdict** lines) ────────────────
+  NUM_VERDICTS=$(grep -ciE '^\*\*Verdict' "$ARBITER_FILE" 2>/dev/null || true)
+  if [ "$NUM_VERDICTS" -gt 0 ]; then
+    echo '<details><summary>Red Team Verdicts ('$NUM_VERDICTS')</summary><div class="detail-body">' >> "$OUT"
+    while IFS= read -r line; do
+      if echo "$line" | grep -qE '^### '; then
+        TITLE=$(echo "$line" | sed 's/^###[[:space:]]*//' | html_escape)
+        echo "<div class=\"rt-detail\"><div style=\"font-weight:600;\">$TITLE</div>" >> "$OUT"
+      elif echo "$line" | grep -qiE '^\*\*[Vv]erdict'; then
+        RULING=$(echo "$line" | html_escape)
+        RCOLOR="#94a3b8"
+        echo "$RULING" | grep -qi 'KILL\|REJECT' && RCOLOR="#fca5a5"
+        echo "$RULING" | grep -qi 'PARTIAL' && RCOLOR="#fef08a"
+        echo "$RULING" | grep -qi 'ACCEPT' && RCOLOR="#bbf7d0"
+        echo "<div class=\"rt-field\" style=\"color:$RCOLOR; font-weight:600;\">$RULING</div>" >> "$OUT"
+      fi
+    done < "$ARBITER_FILE"
     echo '</div></details>' >> "$OUT"
   fi
 
-  # The One Thing
-  ONE_THING=$({ sed -n '/^## The One Thing/,/^##/{/^## /d;p;}' "$ARBITER_FILE" 2>/dev/null || true; } | { grep -v '^$' || true; } | head -3 | tr '\n' ' ' | sed 's/^[[:space:]]*//' | html_escape)
-  [ -z "$ONE_THING" ] && ONE_THING=$({ sed -n '/The One Thing/,$ p' "$ARBITER_FILE" 2>/dev/null || true; } | tail -n +2 | { grep -v '^$' || true; } | head -2 | tr '\n' ' ' | sed 's/^[[:space:]]*//' | html_escape)
-  [ -n "$ONE_THING" ] && echo "<div class=\"one-thing\"><strong>The One Thing:</strong> $ONE_THING</div>" >> "$OUT"
+  # ── Full document drill-down (generic: all headings + bold lines) ───────
+  echo '<details><summary>Full Plan</summary><div class="detail-body">' >> "$OUT"
+  while IFS= read -r line; do
+    if echo "$line" | grep -qE '^## '; then
+      TITLE=$(echo "$line" | sed 's/^##[[:space:]]*//' | html_escape)
+      echo "<div class=\"combo-card\"><div class=\"combo-title\" style=\"color:#bbf7d0\">$TITLE</div></div>" >> "$OUT"
+    elif echo "$line" | grep -qE '^### '; then
+      TITLE=$(echo "$line" | sed 's/^###[[:space:]]*//' | html_escape)
+      echo "<div class=\"rt-detail\"><div style=\"font-weight:600;\">$TITLE</div></div>" >> "$OUT"
+    elif echo "$line" | grep -qE '^\*\*'; then
+      TEXT=$(echo "$line" | html_escape)
+      echo "<div class=\"rt-field\">$TEXT</div>" >> "$OUT"
+    fi
+  done < "$ARBITER_FILE"
+  echo '</div></details>' >> "$OUT"
 
   echo '</div>' >> "$OUT"
 fi

@@ -551,18 +551,52 @@
 <div class="rt-detail"><div style="font-weight:600; color:#fbbf24;">Overall Assessment</div>
 </div></details></div>
 <div class="section" style="border-left: 3px solid #10b981;"><h2>Executive Arbiter</h2>
-<div class="grid-2"><div>
-<div style="font-size:0.8rem;color:#ef4444;font-weight:600;margin-bottom:0.5rem;">KILLED (0)</div>
-</div><div>
-<div style="font-size:0.8rem;color:#10b981;font-weight:600;margin-bottom:0.5rem;">KEPT &amp; SEQUENCED (0 phases)</div>
-</div></div>
-<details><summary>Red Team Rulings</summary><div class="detail-body">
-</div></details>
-<details><summary>Execution Phases Detail</summary><div class="detail-body">
+<div style="font-size:0.8rem;color:#10b981;font-weight:600;margin-bottom:0.5rem;">EXECUTION PHASES (5)</div>
+<div class="kept-item">&#9989; Phase 0: Reconnaissance (Days 1-3)</div>
+<div class="kept-item">&#9989; Phase 1: The Minimum Valuable Test Suite (Days 4-10)</div>
+<div class="kept-item">&#9989; Phase 2: Semantic Validation (Days 11-17)</div>
+<div class="kept-item">&#9989; Phase 3: Production Feedback (Days 18-24)</div>
+<div class="kept-item">&#9989; Phase 4: State Machine Formalization (Days 25-35)</div>
+<details><summary>Full Plan</summary><div class="detail-body">
+<div class="combo-card"><div class="combo-title" style="color:#bbf7d0">Arbiter's Reconciliation</div></div>
+<div class="rt-field">**The core decision**: Start with what exists. Test the scripts as they are. Earn the right to refactor by first proving what is broken.</div>
+<div class="combo-card"><div class="combo-title" style="color:#bbf7d0">Phase 0: Reconnaissance (Days 1-3)</div></div>
+<div class="rt-detail"><div style="font-weight:600;">0.1 Trace the LLM call paths</div></div>
+<div class="rt-field">**Deliverable**: A one-page map of LLM call origins, classified by type. This determines whether `call_llm()` is sufficient or whether agent-spawn-level mocking is needed.</div>
+<div class="rt-detail"><div style="font-weight:600;">0.2 Document the implicit state machine</div></div>
+<div class="rt-field">**Deliverable**: A Mermaid diagram and a JSON transition table reflecting the current reality.</div>
+<div class="rt-detail"><div style="font-weight:600;">0.3 Collect state file specimens</div></div>
+<div class="rt-field">**Deliverable**: A directory of specimen state files and a draft structural schema (what is always true).</div>
+<div class="combo-card"><div class="combo-title" style="color:#bbf7d0">Phase 1: The Minimum Valuable Test Suite (Days 4-10)</div></div>
+<div class="rt-detail"><div style="font-weight:600;">1.1 Implement the LLM boundary</div></div>
+<div class="rt-detail"><div style="font-weight:600;">1.2 Write 10 error-path BATS tests</div></div>
+<div class="rt-detail"><div style="font-weight:600;">1.3 Implement jq-e structural validation</div></div>
+<div class="rt-detail"><div style="font-weight:600;">1.4 Ship the CI gate</div></div>
+<div class="rt-field">**Exit criteria for Phase 1**: `make test` passes. At least one real bug has been found and fixed by the error-path tests. If no bugs are found, the test targets were wrong — revisit the state machine map.</div>
+<div class="combo-card"><div class="combo-title" style="color:#bbf7d0">Phase 2: Semantic Validation (Days 11-17)</div></div>
+<div class="rt-detail"><div style="font-weight:600;">2.1 Write refinement type validators</div></div>
+<div class="rt-detail"><div style="font-weight:600;">2.2 Write 10 forbidden state predicates</div></div>
+<div class="rt-detail"><div style="font-weight:600;">2.3 Layer 1.5 adjacent-phase smoke tests</div></div>
+<div class="rt-detail"><div style="font-weight:600;">2.4 Write schema migration tests</div></div>
+<div class="rt-field">**Exit criteria for Phase 2**: Every phase boundary has a smoke test. Refinement types and forbidden predicates catch at least one class of bug that structural validation misses.</div>
+<div class="combo-card"><div class="combo-title" style="color:#bbf7d0">Phase 3: Production Feedback (Days 18-24)</div></div>
+<div class="rt-detail"><div style="font-weight:600;">3.1 Build the crash black box recorder</div></div>
+<div class="rt-detail"><div style="font-weight:600;">3.2 Implement structured trace emission</div></div>
+<div class="rt-detail"><div style="font-weight:600;">3.3 Production failure -&gt; test fixture pipeline</div></div>
+<div class="rt-detail"><div style="font-weight:600;">3.4 Baseline the wasted run rate</div></div>
+<div class="rt-field">**Exit criteria for Phase 3**: Every crash produces a reproduction archive. The structured trace exists and is machine-parseable. The wasted run rate baseline is documented.</div>
+<div class="combo-card"><div class="combo-title" style="color:#bbf7d0">Phase 4: State Machine Formalization (Days 25-35)</div></div>
+<div class="rt-detail"><div style="font-weight:600;">4.1 Formalize the documented state machine</div></div>
+<div class="rt-detail"><div style="font-weight:600;">4.2 Extract the transition table into a data file</div></div>
+<div class="rt-detail"><div style="font-weight:600;">4.3 Auto-generate test expectations from the formal model</div></div>
+<div class="rt-field">**Exit criteria for Phase 4**: The transition table is a data file. Tests are generated from it. Adding a new phase means adding rows to the table and regenerating tests.</div>
+<div class="combo-card"><div class="combo-title" style="color:#bbf7d0">What Comes After (Month 2+)</div></div>
+<div class="combo-card"><div class="combo-title" style="color:#bbf7d0">Non-Negotiable Constraints</div></div>
+<div class="combo-card"><div class="combo-title" style="color:#bbf7d0">Decision Log</div></div>
 </div></details>
 </div>
 <div class="footer">
-  Generated by brainstorm-generate-digest.sh &middot; Session: brainstorm-testing-nondeterministic-plugin-20260319-143543 &middot; 2026-03-19 15:51
+  Generated by brainstorm-generate-digest.sh &middot; Session: brainstorm-testing-nondeterministic-plugin-20260319-143543 &middot; 2026-03-19 15:59
 </div>
 </body>
 </html>
