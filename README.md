@@ -21,36 +21,51 @@ Storm orchestrates **14 specialized AI agents** across a structured 7-phase pipe
 ## The Pipeline
 
 ```mermaid
-graph LR
-    A["Research\n~10 web searches"] --> B["Setup\n6 personas + briefings"]
-    B --> C["Round 1\nIndependent Ideation"]
-    C --> D["Pre-Mortem\nBlind spot analysis"]
-    D --> E["Round 2\nForced Orthogonality"]
-    D -.->|"constraints +\nconvergence traps"| E
-    E --> F["Reframe\nInverting questions"]
-    D -.->|"systemic flaws"| F
-    F --> G["Round 3\nWild Card"]
-    G --> H["Score + Rank\nAll ideas globally"]
-    H --> I["Synthesis\nTop 10 + moonshots"]
-    I --> J["Red Team\nPre-mortem analysis"]
-    J --> K["Arbiter\nHardened plan"]
-    J -.->|"failure modes"| K
+graph TD
+    A["🔍 Research\n10+ web searches"] --> B["🧩 Setup\n6 personas + briefings"]
+
+    subgraph IDEATION ["💡 Ideation Engine"]
+        direction TB
+        C["Round 1\nIndependent"] --> D{"Pre-Mortem\nBlind spots"}
+        D -->|"banned traps\n+ missing domains"| E["Round 2\nForced Orthogonality"]
+        D -.->|"systemic flaws"| F{"Reframe\nInverting questions"}
+        E --> F
+        F --> G["Round 3\nWild Card"]
+    end
+
+    subgraph EVAL ["⚖️ Evaluation"]
+        direction TB
+        H["Score\n5 parallel batches"] --> I["Rank\nTop 10 + moonshots"]
+        I --> J["Cluster\nThematic groups"]
+    end
+
+    subgraph HARDEN ["🛡️ Hardening"]
+        direction TB
+        K["Synthesis\nFinal document"] --> L["Red Team\nFailure analysis"]
+        L -->|"failure modes"| M["Arbiter\nHardened plan"]
+    end
+
+    B --> IDEATION
+    IDEATION --> EVAL
+    EVAL --> HARDEN
 
     style A fill:#4f46e5,stroke:#4f46e5,color:#fff
     style B fill:#4f46e5,stroke:#4f46e5,color:#fff
     style C fill:#7c3aed,stroke:#7c3aed,color:#fff
-    style D fill:#6d28d9,stroke:#6d28d9,color:#fff
+    style D fill:#f59e0b,stroke:#f59e0b,color:#fff
     style E fill:#7c3aed,stroke:#7c3aed,color:#fff
-    style F fill:#6d28d9,stroke:#6d28d9,color:#fff
+    style F fill:#f59e0b,stroke:#f59e0b,color:#fff
     style G fill:#7c3aed,stroke:#7c3aed,color:#fff
     style H fill:#059669,stroke:#059669,color:#fff
     style I fill:#059669,stroke:#059669,color:#fff
-    style J fill:#dc2626,stroke:#dc2626,color:#fff
+    style J fill:#059669,stroke:#059669,color:#fff
     style K fill:#0891b2,stroke:#0891b2,color:#fff
+    style L fill:#dc2626,stroke:#dc2626,color:#fff
+    style M fill:#0891b2,stroke:#0891b2,color:#fff
 
-    linkStyle 4 stroke:#f59e0b,stroke-width:2px,stroke-dasharray:5
-    linkStyle 6 stroke:#f59e0b,stroke-width:2px,stroke-dasharray:5
-    linkStyle 11 stroke:#f59e0b,stroke-width:2px,stroke-dasharray:5
+    style IDEATION fill:#1e1b4b,stroke:#7c3aed,color:#c7d2fe,stroke-width:2px
+    style EVAL fill:#052e16,stroke:#059669,color:#bbf7d0,stroke-width:2px
+    style HARDEN fill:#1c1917,stroke:#dc2626,color:#fca5a5,stroke-width:2px
 ```
 
 <br>
