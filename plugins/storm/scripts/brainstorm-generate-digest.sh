@@ -3,7 +3,12 @@
 # Usage: bash brainstorm-generate-digest.sh <session_dir>
 # Output: $SD/output/digest.html
 
-set -euo pipefail
+set -uo pipefail
+# Note: -e (errexit) deliberately omitted. The digest generation uses many
+# grep/sed pipelines that legitimately return non-zero on no-match. Rather
+# than wrapping every grep in { ... || true; }, we accept non-zero exits
+# and rely on the final "Digest generated" echo + file existence as the
+# success indicator.
 
 SD="$1"
 SF="$SD/session.json"
@@ -42,9 +47,9 @@ for ((r=1; r<=TOTAL_ROUNDS; r++)); do
   PRE="$SD/board/round${r}_compiled_pre_dedup.md"
   POST="$SD/board/round${r}_compiled.md"
   if [ -f "$PRE" ]; then
-    RAW=$(grep -cE '\[[0-9]+\]' "$PRE" 2>/dev/null || true)
+    RAW=$(grep -cE '^\[[A-Za-z0-9_-]+\]' "$PRE" 2>/dev/null || true)
   elif [ -f "$POST" ]; then
-    RAW=$(grep -cE '\[[0-9]+\]' "$POST" 2>/dev/null || true)
+    RAW=$(grep -cE '^\[[A-Za-z0-9_-]+\]' "$POST" 2>/dev/null || true)
   else
     RAW=0
   fi
@@ -62,7 +67,7 @@ for ((r=1; r<=TOTAL_ROUNDS; r++)); do
   TOTAL_DEDUP_REMOVED=$((TOTAL_DEDUP_REMOVED + REMOVED))
 
   if [ -f "$POST" ]; then
-    AFTER=$(grep -cE '\[[0-9]+\]' "$POST" 2>/dev/null || true)
+    AFTER=$(grep -cE '^\[[A-Za-z0-9_-]+\]' "$POST" 2>/dev/null || true)
   else
     AFTER=$((RAW - REMOVED))
   fi
@@ -71,7 +76,7 @@ done
 
 ALL_COMPILED="$SD/board/all_compiled.md"
 TOTAL_FINAL=0
-[ -f "$ALL_COMPILED" ] && TOTAL_FINAL=$(grep -cE '\[[0-9]+\]' "$ALL_COMPILED" 2>/dev/null || true)
+[ -f "$ALL_COMPILED" ] && TOTAL_FINAL=$(grep -cE '^\[[A-Za-z0-9_-]+\]' "$ALL_COMPILED" 2>/dev/null || true)
 
 # ── Complexity Badge Color ───────────────────────────────────────────────────
 case "$COMPLEXITY" in
@@ -241,12 +246,12 @@ for ((i=0; i<${#AGENT_NAMES_ARR[@]}; i++)); do
   COLOR="${COLORS[$((i % ${#COLORS[@]}))]}"
   AGENT_IDEAS=0
   PER_ROUND=""
-  for ((r=1; r<=TOTAL_ROUNDS; r++)); do
-    F="$SD/round${r}/${name}.md"
+  for ((rr=1; rr<=TOTAL_ROUNDS; rr++)); do
+    F="$SD/round${rr}/${name}.md"
     C=0
     [ -f "$F" ] && C=$(grep -cE '^[0-9]+[.)]' "$F" 2>/dev/null || true)
     AGENT_IDEAS=$((AGENT_IDEAS + C))
-    PER_ROUND="$PER_ROUND R$r:$C"
+    PER_ROUND="$PER_ROUND R$rr:$C"
   done
   cat >> "$OUT" << EOF
   <div class="agent-card" style="border-left: 4px solid $COLOR">
@@ -366,18 +371,18 @@ EOF
   # Compiled board preview
   COMPILED="$SD/board/round${r}_compiled.md"
   if [ -f "$COMPILED" ]; then
-    BOARD_COUNT=$(grep -cE '\[[0-9]+\]' "$COMPILED" 2>/dev/null || true)
+    BOARD_COUNT=$(grep -cE '^\[[A-Za-z0-9_-]+\]' "$COMPILED" 2>/dev/null || true)
     BOARD_COUNT=${BOARD_COUNT:-0}
     cat >> "$OUT" << EOF
       <details>
         <summary>Compiled Board ($BOARD_COUNT ideas)</summary>
         <div class="detail-body">
 EOF
-    { grep -E '\[[0-9]+\]' "$COMPILED" 2>/dev/null || true; } | while IFS= read -r line; do
+    { grep -E '^\[' "$COMPILED" 2>/dev/null || true; } | while IFS= read -r line; do
       [ -z "$line" ] && continue
-      ID=$(echo "$line" | grep -oE '\[[0-9]+\]' | head -1)
+      ID=$(echo "$line" | grep -oE '^\[[A-Za-z0-9_-]+\]' | head -1)
       AGENT=$(echo "$line" | grep -oE '\([a-z_]+\)' | head -1 || true)
-      TEXT=$(echo "$line" | sed 's/.*\[[0-9]*\][[:space:]]*([a-z_]*)[[:space:]]*//' | html_escape); TEXT="${TEXT:0:200}"
+      TEXT=$(echo "$line" | sed 's/^\[[^]]*\][[:space:]]*([a-z_]*)[[:space:]]*//' | html_escape); TEXT="${TEXT:0:200}"
       echo "<div class=\"idea-line\"><span class=\"idea-id\">$ID</span> <span class=\"idea-agent\">$AGENT</span> $TEXT</div>" >> "$OUT"
     done
     echo '</div></details>' >> "$OUT"
