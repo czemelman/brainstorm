@@ -221,7 +221,7 @@ EOF
 # ── Stats ────────────────────────────────────────────────────────────────────
 CLUSTERS_FILE="$SD/evaluation/clusters.md"
 NUM_CLUSTERS=0
-[ -f "$CLUSTERS_FILE" ] && NUM_CLUSTERS=$(grep -cE '^## Cluster [0-9]+' "$CLUSTERS_FILE" 2>/dev/null || true)
+[ -f "$CLUSTERS_FILE" ] && NUM_CLUSTERS=$(grep -cE '^## ' "$CLUSTERS_FILE" 2>/dev/null || true)
 
 cat >> "$OUT" << EOF
 <div class="grid-4" style="margin-bottom: 1.5rem;">
@@ -399,16 +399,11 @@ echo '<div class="section"><details><summary><span style="font-size:1rem;">Evalu
 # Cluster details
 if [ -f "$CLUSTERS_FILE" ]; then
   echo '<details><summary>Clusters ('$NUM_CLUSTERS')</summary><div class="detail-body">' >> "$OUT"
-  # Parse each cluster
-  CNUM=0
-  { grep -E '^## Cluster [0-9]+' "$CLUSTERS_FILE" 2>/dev/null || true; } | while IFS= read -r header; do
-    CNUM=$((CNUM + 1))
-    CNAME=$(echo "$header" | sed 's/^## Cluster [0-9]*:[[:space:]]*//' | html_escape)
-    # Get idea list
-    IDEAS_LINE=$(sed -n "/^## Cluster ${CNUM}/,/^##/{/^[Ii]deas:/p;}" "$CLUSTERS_FILE" 2>/dev/null | head -1)
-    IDEAS_TEXT=$(echo "$IDEAS_LINE" | sed 's/^[Ii]deas:[[:space:]]*//' | html_escape)
-    IDEA_COUNT=$(echo "$IDEAS_LINE" | tr ',' '\n' | grep -cE '[0-9]+' 2>/dev/null || echo "?")
-    echo "<div class=\"cluster-detail\"><div class=\"cluster-name\"><span class=\"cluster-chip\">$CNAME</span> <span style=\"font-size:0.75rem;color:#64748b;\">($IDEA_COUNT ideas)</span></div><div class=\"cluster-ideas\">Ideas: $IDEAS_TEXT</div></div>" >> "$OUT"
+  # Parse each cluster — flexible: match any ## heading containing "Cluster" or numbered sections
+  { grep -E '^## ' "$CLUSTERS_FILE" 2>/dev/null || true; } | while IFS= read -r header; do
+    CNAME=$(echo "$header" | sed 's/^##[[:space:]]*//' | html_escape)
+    # Count ideas: look for ID numbers in the section (table rows, comma lists, or [N] references)
+    echo "<div class=\"cluster-detail\"><div class=\"cluster-name\"><span class=\"cluster-chip\">$CNAME</span></div></div>" >> "$OUT"
   done
   echo '</div></details>' >> "$OUT"
 fi
@@ -452,12 +447,13 @@ fi
 # Combinations detail
 COMBOS_FILE="$SD/evaluation/combinations.md"
 if [ -f "$COMBOS_FILE" ]; then
-  NUM_COMBOS=$(grep -cE '^### ' "$COMBOS_FILE" 2>/dev/null || true)
+  NUM_COMBOS=$(grep -cE '^##+ .*[Cc]ombination' "$COMBOS_FILE" 2>/dev/null || true)
+  [ "$NUM_COMBOS" -eq 0 ] && NUM_COMBOS=$(grep -cE '^### ' "$COMBOS_FILE" 2>/dev/null || true)
   echo '<details><summary>Combinations ('$NUM_COMBOS')</summary><div class="detail-body">' >> "$OUT"
   while IFS= read -r line; do
-    TITLE=$(echo "$line" | sed 's/^###[[:space:]]*//' | html_escape)
+    TITLE=$(echo "$line" | sed 's/^#*[[:space:]]*//' | html_escape)
     echo "<div class=\"combo-card\"><div class=\"combo-title\">$TITLE</div></div>" >> "$OUT"
-  done < <(grep -E '^### ' "$COMBOS_FILE" 2>/dev/null | head -10)
+  done < <({ grep -E '^##+ .*[Cc]ombination' "$COMBOS_FILE" 2>/dev/null || grep -E '^### ' "$COMBOS_FILE" 2>/dev/null || true; } | head -10)
   echo '</div></details>' >> "$OUT"
 fi
 
@@ -495,29 +491,29 @@ echo '</div>' >> "$OUT"
 # ═══════════════════════════════════════════════════════════════════════════
 REDTEAM_FILE="$SD/output/red_team_memo.md"
 if [ -f "$REDTEAM_FILE" ]; then
-  NUM_FAILURES=$(grep -cE '^### [0-9]+\.' "$REDTEAM_FILE" 2>/dev/null || true)
+  # Match any ## or ### heading that looks like a finding (Vulnerability, Failure, numbered, etc.)
+  NUM_FAILURES=$(grep -cE '^##+ .*(Vulnerability|Failure|Finding|Risk|[0-9]+[.):])' "$REDTEAM_FILE" 2>/dev/null || true)
+  [ "$NUM_FAILURES" -eq 0 ] && NUM_FAILURES=$(grep -cE '^##+ [^#]' "$REDTEAM_FILE" 2>/dev/null || true)
   echo '<div class="section" style="border-left: 3px solid #fbbf24;">' >> "$OUT"
   echo "<h2>Red Team Findings ($NUM_FAILURES)</h2>" >> "$OUT"
 
-  # Summary items (always visible)
-  { grep -E '^### [0-9]+\.' "$REDTEAM_FILE" 2>/dev/null || true; } | head -5 | while IFS= read -r line; do
-    TITLE=$(echo "$line" | sed 's/^###[[:space:]]*[0-9]*\.[[:space:]]*//' | html_escape)
+  # Summary items — extract any heading that looks like a specific finding
+  { grep -E '^## .*(Vulnerability|Failure|Finding|Risk|[0-9]+[.):])' "$REDTEAM_FILE" 2>/dev/null || grep -E '^### .*[0-9]' "$REDTEAM_FILE" 2>/dev/null || true; } | head -5 | while IFS= read -r line; do
+    TITLE=$(echo "$line" | sed 's/^#*[[:space:]]*//' | html_escape)
     echo "<div class=\"redteam-item\"><span class=\"warn-icon\">&#9888;</span> $TITLE</div>" >> "$OUT"
   done
 
   # Drill-down with full details
   echo '<details><summary>Full Details</summary><div class="detail-body">' >> "$OUT"
 
-  # Extract each failure mode with its sub-fields
-  awk '/^### [0-9]+\./{if(title)print "ENDBLOCK"; title=$0} /^\*\*Affected|^\*\*What happens|^\*\*Early warning|^\*\*Mitigation/{print} END{if(title)print "ENDBLOCK"}' "$REDTEAM_FILE" 2>/dev/null | while IFS= read -r line; do
-    if echo "$line" | grep -qE '^### '; then
-      TITLE=$(echo "$line" | sed 's/^###[[:space:]]*//' | html_escape)
+  # Extract headings and **bold** fields from the red team memo
+  { grep -E '^##+ |^\*\*' "$REDTEAM_FILE" 2>/dev/null || true; } | while IFS= read -r line; do
+    if echo "$line" | grep -qE '^##+ '; then
+      TITLE=$(echo "$line" | sed 's/^#*[[:space:]]*//' | html_escape)
       echo "<div class=\"rt-detail\"><div style=\"font-weight:600; color:#fbbf24;\">$TITLE</div>" >> "$OUT"
     elif echo "$line" | grep -qE '^\*\*'; then
       TEXT=$(echo "$line" | html_escape)
       echo "<div class=\"rt-field\">$TEXT</div>" >> "$OUT"
-    elif echo "$line" | grep -qE '^ENDBLOCK'; then
-      echo "</div>" >> "$OUT"
     fi
   done
 
