@@ -51,14 +51,12 @@ If the user wants to continue, switch to the continue flow for that session (rea
 2. Create the full directory tree under `~/brainstorm-sessions/{session_id}/`:
    ```
    feed/
-   prompts/
    round1/
    round2/
    round3/
    board/
    evaluation/
    checkpoints/
-   sandbox/
    output/
    ```
 
