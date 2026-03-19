@@ -11,6 +11,24 @@ You are the orchestrator. Follow these phases in order. LLMs do the thinking
 - All dedup application goes through `bash $STORM_ROOT/scripts/brainstorm-apply-dedup.sh`
 - When an Agent completes, you receive a notification — do NOT poll or sleep
 
+## CRITICAL: Model Assignment for Agent Tool Calls
+
+When launching agents via the Agent tool, you MUST pass the `model` parameter explicitly.
+This is NOT optional — the model parameter controls which LLM runs the subagent.
+If you omit it, the agent inherits your model (which may be too weak for the task).
+
+**Model mapping — use these exact values in the Agent tool `model` parameter:**
+- `model: "opus"` — for: research, setup, pre-mortem, reframe, ranker, clusterer, synthesizer, red team, arbiter
+- `model: "sonnet"` — for: persona agents (ideation rounds), scorer agents
+- `model: "haiku"` — for: dedup, diversity, checkpoint
+
+Example Agent tool call with model:
+```
+Agent(description="...", model="opus", prompt="...", run_in_background=true)
+```
+
+Do NOT skip the model parameter. Do NOT default to your own model for opus-designated agents.
+
 ## Agent Path Convention
 
 Agent system prompts (in `$STORM_ROOT/agents/brainstorm-*.md`) reference `input/` paths
