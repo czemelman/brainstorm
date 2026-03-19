@@ -26,12 +26,15 @@ graph LR
     B --> C["Round 1\nIndependent Ideation"]
     C --> D["Pre-Mortem\nBlind spot analysis"]
     D --> E["Round 2\nForced Orthogonality"]
+    D -.->|"constraints +\nconvergence traps"| E
     E --> F["Reframe\nInverting questions"]
+    D -.->|"systemic flaws"| F
     F --> G["Round 3\nWild Card"]
     G --> H["Score + Rank\nAll ideas globally"]
     H --> I["Synthesis\nTop 10 + moonshots"]
     I --> J["Red Team\nPre-mortem analysis"]
     J --> K["Arbiter\nHardened plan"]
+    J -.->|"failure modes"| K
 
     style A fill:#4f46e5,stroke:#4f46e5,color:#fff
     style B fill:#4f46e5,stroke:#4f46e5,color:#fff
@@ -44,6 +47,10 @@ graph LR
     style I fill:#059669,stroke:#059669,color:#fff
     style J fill:#dc2626,stroke:#dc2626,color:#fff
     style K fill:#0891b2,stroke:#0891b2,color:#fff
+
+    linkStyle 4 stroke:#f59e0b,stroke-width:2px,stroke-dasharray:5
+    linkStyle 6 stroke:#f59e0b,stroke-width:2px,stroke-dasharray:5
+    linkStyle 11 stroke:#f59e0b,stroke-width:2px,stroke-dasharray:5
 ```
 
 <br>
