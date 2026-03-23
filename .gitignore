@@ -1,2 +1,22 @@
+# Backups
 backup/
+
+# OS files
 .DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Temp files
+*.tmp
+*.bak
+
+# Session data (local only)
+brainstorm-sessions/

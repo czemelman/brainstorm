@@ -1,0 +1,45 @@
+name: Lint
+
+on:
+  push:
+    branches: [main, claude]
+  pull_request:
+    branches: [main, claude]
+
+jobs:
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: plugins/storm/scripts
+
+  validate-json:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate JSON files
+        run: |
+          for f in $(find . -name '*.json' -not -path './.git/*'); do
+            echo "Validating $f"
+            jq empty "$f" || { echo "FAIL: $f is not valid JSON"; exit 1; }
+          done
+
+  validate-frontmatter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check agent specs have required frontmatter
+        run: |
+          failed=0
+          for f in plugins/storm/agents/brainstorm-*.md; do
+            for field in name description model; do
+              if ! head -20 "$f" | grep -q "^${field}:"; then
+                echo "FAIL: $f missing '$field' in frontmatter"
+                failed=1
+              fi
+            done
+          done
+          exit $failed

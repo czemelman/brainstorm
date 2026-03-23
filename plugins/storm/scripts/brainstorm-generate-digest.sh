@@ -10,10 +10,6 @@ set -uo pipefail
 # and rely on the final "Digest generated" echo + file existence as the
 # success indicator.
 
-SD="$1"
-SF="$SD/session.json"
-OUT="$SD/output/digest.html"
-
 # ── Helpers ──────────────────────────────────────────────────────────────────
 html_escape() { sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g'; }
 
@@ -22,6 +18,11 @@ if [ $# -lt 1 ] || [ -z "$1" ]; then
   echo "Usage: $0 <session_dir>" >&2
   exit 1
 fi
+
+SD="$1"
+SF="$SD/session.json"
+OUT="$SD/output/digest.html"
+
 [ -d "$SD" ] || { echo "ERROR: $SD is not a directory" >&2; exit 1; }
 
 # ── Extract Session Metadata ────────────────────────────────────────────────
